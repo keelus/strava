@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioRetoImpl extends UnicastRemoteObject implements ServicioReto {
+    ArrayList<Reto> retosCreados = new ArrayList<Reto>();
 
     public ServicioRetoImpl() throws RemoteException {
         super();
@@ -18,6 +19,7 @@ public class ServicioRetoImpl extends UnicastRemoteObject implements ServicioRet
 
     @Override
     public String crearReto(Reto reto) throws RemoteException {
+        retosCreados.add(reto);
         return "Reto creado: " + reto.getNombre();
     }
 
@@ -29,10 +31,6 @@ public class ServicioRetoImpl extends UnicastRemoteObject implements ServicioRet
     // donde guardamos las variables :(
     @Override
     public List<Reto> listarRetosActivos(RetoListarActivosCuerpo cuerpo) throws RemoteException {
-        List<Reto> retos = new ArrayList<>();
-        Reto reto = new Reto();
-        reto.setNombre("ESTO ES UN RETO");
-        retos.add(reto);
-        return retos;
+        return retosCreados;
     }
 }

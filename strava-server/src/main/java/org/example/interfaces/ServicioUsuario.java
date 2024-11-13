@@ -1,7 +1,6 @@
 package org.example.interfaces;
 
 import org.example.modelos.LoginCredenciales;
-import org.example.modelos.SesionEntrenamiento;
 import org.example.modelos.Usuario;
 
 import java.rmi.Remote;

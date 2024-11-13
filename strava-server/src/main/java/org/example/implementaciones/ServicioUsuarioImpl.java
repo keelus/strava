@@ -2,13 +2,14 @@ package org.example.implementaciones;
 
 import org.example.interfaces.ServicioUsuario;
 import org.example.modelos.LoginCredenciales;
-import org.example.modelos.SesionEntrenamiento;
 import org.example.modelos.Usuario;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ServicioUsuarioImpl extends UnicastRemoteObject implements ServicioUsuario {
+    private ArrayList<Usuario> usuariosRegistrados = new ArrayList<Usuario>(); // Simula la base de datos de usuarios
 
     public ServicioUsuarioImpl() throws RemoteException {
         super();
@@ -16,17 +17,24 @@ public class ServicioUsuarioImpl extends UnicastRemoteObject implements Servicio
 
     @Override
     public Usuario login(LoginCredenciales credenciales) throws RemoteException {
-        if (credenciales.getEmail().equals("test") && credenciales.getContrasenya().equals("test")) {
-            Usuario usuario = new Usuario();
-            usuario.setEmail(credenciales.getEmail());
-            usuario.setNombre("test");
-            return usuario;
+        for(int i = 0; i < usuariosRegistrados.size(); i++) {
+            if(usuariosRegistrados.get(i).getEmail().equals(credenciales.getEmail())) {
+                // Aqui iria la verificacion google/meta
+                return usuariosRegistrados.get(i);
+            }
         }
-        return null;
+        throw new RemoteException("Error! Usuario no registrado.");
     }
 
     @Override
-    public String registrar(Usuario usuario) throws RemoteException {
-        return "Usuario registrado: " + usuario.getEmail();
+    public String registrar(Usuario usuario) throws RemoteException{
+        for(int i = 0; i < usuariosRegistrados.size(); i++) {
+            if(usuariosRegistrados.get(i).getEmail().equals(usuario.getEmail())) {
+                throw new RemoteException("Error! Usuario ya registrado.");
+            }
+        }
+        usuariosRegistrados.add(usuario);
+        return "Usuario registrado correctamente: " + usuario.getEmail();
     }
+
 }
