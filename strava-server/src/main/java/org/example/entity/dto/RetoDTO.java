@@ -1,23 +1,23 @@
-package org.example.modelos;
+package org.example.entity.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Reto implements Serializable {
-    public int id;
+public class RetoDTO implements Serializable  {
+    public Long id;
     public String nombre;
-    public Usuario autor;
+    public UsuarioDTO autor; // Esto se podria quitar? O en DO? Mirarlo
     public String fechaInicio;
     public String fechaFin;
     public String tipoObjetivo;
     public int objetivo;
     public ArrayList<String> deporte;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -29,11 +29,11 @@ public class Reto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Usuario getAutor() {
+    public UsuarioDTO getAutor() {
         return autor;
     }
 
-    public void setAutor(Usuario autor) {
+    public void setAutor(UsuarioDTO autor) {
         this.autor = autor;
     }
 

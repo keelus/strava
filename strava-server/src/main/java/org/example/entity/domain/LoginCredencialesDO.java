@@ -1,10 +1,8 @@
-package org.example.modelos;
+package org.example.entity.domain;
 
-import java.io.Serializable;
-
-public class LoginCredenciales implements Serializable {
-    public String email;
-    public String contrasenya;
+public class LoginCredencialesDO {
+    private String email;
+    private String contrasenya;
 
     public String getEmail() {
         return email;

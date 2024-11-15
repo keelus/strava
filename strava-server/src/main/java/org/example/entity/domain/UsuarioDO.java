@@ -1,9 +1,8 @@
-package org.example.modelos;
+package org.example.entity.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Usuario implements Serializable {
+public class UsuarioDO {
     private Integer id;
     private String email;
     private String metodoRegistro;
