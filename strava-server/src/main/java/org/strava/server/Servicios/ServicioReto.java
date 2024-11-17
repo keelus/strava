@@ -6,8 +6,8 @@ import org.strava.server.Data.Dominio.UsuarioDO;
 
 import java.util.*;
 
-public class RetoService {
-    private static RetoService instance;
+public class ServicioReto {
+    private static ServicioReto instance;
     // Long llave -> ID del reto, para rapido acceso
     private final Map<Long, RetoDO> retos = new HashMap<>();
 
@@ -15,20 +15,22 @@ public class RetoService {
     // Long en lista -> ID del reto
     private final Map<Long, List<Long>> retosAceptados = new HashMap<>();
 
-    private RetoService() {
+    private ServicioReto() {
     }
 
-    public static RetoService getInstance() {
+    public static ServicioReto getInstance() {
         if(instance == null) {
-            instance = new RetoService();
+            instance = new ServicioReto();
         }
         return instance;
     }
 
     public void crearReto(TokenDO tokenDo, RetoDO retoDo) throws Exception {
         // Comprobar si el token es valido
-        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+        if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
+            UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
             retoDo.id = Long.valueOf(retos.size());
+            retoDo.autorId = usuarioDo.getId();
             retos.put(retoDo.id, retoDo);
         } else {
             throw new Exception("El token de sesion no es valido.");
@@ -36,11 +38,11 @@ public class RetoService {
     }
     public void aceptarReto(TokenDO tokenDo, Long retoId) throws Exception {
         // Comprobar si el token es valido
-        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+        if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             boolean retoExiste = retos.containsKey(retoId);
 
             if(retoExiste) {
-                UsuarioDO usuarioDo = AuthService.getInstance().conseguirUsuarioDeToken(tokenDo);
+                UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
 
                 List<Long> retosAceptadosPorElUsuario;
                 if(retosAceptados.containsKey(usuarioDo.getId())) {
@@ -60,7 +62,7 @@ public class RetoService {
     }
 
     public List<RetoDO> getRetosActivos(TokenDO tokenDo, Date fechaLimite) throws Exception {
-        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+        if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             List<RetoDO> retosActivos = new ArrayList<>();
             for(RetoDO reto: retos.values()) {
                 //if(reto.getFechaFin().before(fechaLimite)) {

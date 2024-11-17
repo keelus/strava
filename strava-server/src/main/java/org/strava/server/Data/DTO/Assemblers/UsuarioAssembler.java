@@ -25,7 +25,11 @@ public class UsuarioAssembler {
     public static UsuarioDO dtoToDo(UsuarioDTO usuarioDto) {
         UsuarioDO usuarioDo = new UsuarioDO();
 
-        usuarioDo.setId(usuarioDto.getId());
+        // Si el usuario se esta registrando, su ID sera nula, pues
+        // aun no esta registrado.
+        if(usuarioDto.getId() != null)
+            usuarioDo.setId(usuarioDto.getId());
+
         usuarioDo.setNombre(usuarioDto.getNombre());
         usuarioDo.setEmail(usuarioDto.getEmail());
         usuarioDo.setFechaNacimiento(usuarioDto.getFechaNacimiento());

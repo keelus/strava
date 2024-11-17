@@ -6,17 +6,17 @@ import org.strava.server.Data.Dominio.UsuarioDO;
 
 import java.util.*;
 
-public class AuthService {
-    private static AuthService instance;
+public class ServicioAutenticacion {
+    private static ServicioAutenticacion instance;
     private final List<UsuarioDO> usuarios = new ArrayList<>();
     private final Map<TokenDO, UsuarioDO> sesiones = new HashMap<>();
 
-    private AuthService() {
+    private ServicioAutenticacion() {
     }
 
-    public static AuthService getInstance() {
+    public static ServicioAutenticacion getInstance() {
         if(instance == null) {
-            instance = new AuthService();
+            instance = new ServicioAutenticacion();
         }
         return instance;
     }
@@ -36,6 +36,7 @@ public class AuthService {
             }
         }
 
+        nuevoUsuarioDo.setId(Long.valueOf(usuarios.size()));
         usuarios.add(nuevoUsuarioDo);
     }
 
@@ -62,9 +63,6 @@ public class AuthService {
     }
 
     public boolean isTokenValido(TokenDO tokenDo) {
-        for(TokenDO tokenSesDo: this.sesiones.keySet()) {
-            System.out.println(tokenSesDo.getValor());
-        }
         if(sesiones.containsKey(tokenDo)) {
             return true;
         }

@@ -3,7 +3,7 @@ package org.strava.server.Data.DTO.Assemblers;
 import org.strava.server.Data.DTO.RetoDTO;
 import org.strava.server.Data.Dominio.RetoDO;
 import org.strava.server.Data.Dominio.UsuarioDO;
-import org.strava.server.Servicios.AuthService;
+import org.strava.server.Servicios.ServicioAutenticacion;
 
 public class RetoAssembler {
     public static RetoDTO doToDto(RetoDO reto) throws Exception{
@@ -13,8 +13,9 @@ public class RetoAssembler {
         retoDto.setNombre(reto.nombre);
 
         // TODO: Hacer estas
-        UsuarioDO usuarioDo = AuthService.getInstance().conseguirUsuario(reto.autorId);
+        UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuario(reto.autorId);
         retoDto.setAutor(UsuarioAssembler.doToDto(usuarioDo));
+
         retoDto.setDeporte(reto.deporte);
         retoDto.setObjetivo(reto.objetivo);
         retoDto.setTipoObjetivo(reto.tipoObjetivo);

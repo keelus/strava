@@ -6,22 +6,22 @@ import org.strava.server.Data.Dominio.TokenDO;
 
 import java.util.*;
 
-public class SesionEntrenamientoService {
-    private static SesionEntrenamientoService instance;
+public class ServicioSesionEntrenamiento {
+    private static ServicioSesionEntrenamiento instance;
     private final Map<Long, SesionEntrenamientoDO> sesionesEntrenamiento = new HashMap<>();
 
-    private SesionEntrenamientoService() {
+    private ServicioSesionEntrenamiento() {
     }
 
-    public static SesionEntrenamientoService getInstance() {
+    public static ServicioSesionEntrenamiento getInstance() {
         if(instance == null) {
-            instance = new SesionEntrenamientoService();
+            instance = new ServicioSesionEntrenamiento();
         }
         return instance;
     }
 
     public void crearSesionEntrenamiento(TokenDO tokenDo, SesionEntrenamientoDO sesionEntrenamientoDo) throws Exception {
-        if(AuthService.getInstance().isTokenValido(tokenDo)) {
+        if(ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             sesionEntrenamientoDo.id = Long.valueOf(sesionesEntrenamiento.size());
             sesionesEntrenamiento.put(sesionEntrenamientoDo.id, sesionEntrenamientoDo);
             System.out.println("Sesion de entrenamiento creada: " + sesionEntrenamientoDo.titulo + " | " + sesionEntrenamientoDo.id.toString());
