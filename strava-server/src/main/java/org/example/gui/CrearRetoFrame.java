@@ -2,16 +2,19 @@ package org.example.gui;
 
 import org.example.Cliente;
 import org.example.entity.dto.RetoDTO;
+import org.example.entity.dto.TokenDTO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
 public class CrearRetoFrame extends JFrame {
-
+    private TokenDTO tokenSesion;
     private JTextField nombreRetoField;
 
-    public CrearRetoFrame() {
+    public CrearRetoFrame(TokenDTO tokenSesion) {
+        this.tokenSesion = tokenSesion;
+
         setTitle("Crear Reto");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -76,7 +79,7 @@ public class CrearRetoFrame extends JFrame {
             RetoDTO reto = new RetoDTO();
             reto.setNombre(nombreRetoField.getText());
 
-            Cliente.retoController.crearReto(reto);
+            Cliente.retoController.crearReto(tokenSesion, reto);
             JOptionPane.showMessageDialog(this, "Reto creado exitosamente.");
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al crear el reto: " + e.getCause());

@@ -4,7 +4,7 @@ import org.example.entity.dto.RetoDTO;
 import org.example.entity.domain.RetoDO;
 
 public class RetoAssembler {
-    public static RetoDTO assemble(RetoDO reto) {
+    public static RetoDTO doToDto(RetoDO reto) {
         RetoDTO retoDto = new RetoDTO();
 
         retoDto.setId(reto.id);
@@ -20,7 +20,7 @@ public class RetoAssembler {
 
         return retoDto;
     }
-    public static RetoDO getDO(RetoDTO retoDto) {
+    public static RetoDO dtoToDo(RetoDTO retoDto) {
         RetoDO retoDo = new RetoDO();
 
         retoDo.setNombre(retoDto.nombre);

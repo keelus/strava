@@ -1,11 +1,16 @@
 package org.example.gui;
 
+import org.example.entity.dto.TokenDTO;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
+    private TokenDTO tokenSesion;
 
-    public MainFrame() {
+    public MainFrame(TokenDTO tokenSesion) {
+        this.tokenSesion = tokenSesion;
+
         setTitle("Menú Principal");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,10 +50,10 @@ public class MainFrame extends JFrame {
         menuPanel.add(cerrarButton, gbc);
 
         crearRetoButton.addActionListener(e -> {
-            new CrearRetoFrame();
+            new CrearRetoFrame(this.tokenSesion);
         });
         listarButton.addActionListener(e -> {
-            new ListarRetosFrame();
+            new ListarRetosFrame(this.tokenSesion);
         });
         cerrarButton.addActionListener(e -> {
             JOptionPane.showMessageDialog(MainFrame.this, "Sesión cerrada");

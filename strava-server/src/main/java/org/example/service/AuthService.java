@@ -7,10 +7,18 @@ import org.example.entity.domain.UsuarioDO;
 import java.util.*;
 
 public class AuthService {
+    private static AuthService instance;
     private final List<UsuarioDO> usuarios = new ArrayList<>();
     private final Map<TokenDO, UsuarioDO> sesiones = new HashMap<>();
 
-    public AuthService() {
+    private AuthService() {
+    }
+
+    public static AuthService getInstance() {
+        if(instance == null) {
+            instance = new AuthService();
+        }
+        return instance;
     }
 
     public void registrarUsuario(UsuarioDO nuevoUsuarioDo) throws  Exception {
@@ -43,5 +51,12 @@ public class AuthService {
         if(sesiones.containsKey(tokenDo)) {
             sesiones.remove(tokenDo);
         }
+    }
+
+    public boolean isTokenValido(TokenDO tokenDo) {
+        if(sesiones.containsKey(tokenDo)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -9,16 +9,13 @@ import org.example.entity.dto.TokenDTO;
 import org.example.entity.dto.UsuarioDTO;
 import org.example.facade.interfaces.IAuthController;
 import org.example.service.AuthService;
-import org.example.service.RetoService;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
 
 public class AuthController extends UnicastRemoteObject implements IAuthController {
-
-    private final AuthService authService = new AuthService();
+    private final AuthService authService = AuthService.getInstance();
 
     public AuthController() throws RemoteException {
         super();
@@ -27,7 +24,7 @@ public class AuthController extends UnicastRemoteObject implements IAuthControll
     @Override
     public void registrar(UsuarioDTO usuarioDto) throws RemoteException {
         try {
-            authService.registrarUsuario(UsuarioAssembler.getDO(usuarioDto));
+            authService.registrarUsuario(UsuarioAssembler.dtoToDo(usuarioDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -35,9 +32,9 @@ public class AuthController extends UnicastRemoteObject implements IAuthControll
 
     @Override
     public TokenDTO login(LoginCredencialesDTO credencialesDto) throws RemoteException {
-        Optional<TokenDO> token = authService.crearSesion(LoginCredencialesAssembler.getDO(credencialesDto));
+        Optional<TokenDO> token = authService.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto));
 
-        return TokenAssembler.assemble(
+        return TokenAssembler.doToDto(
                 token.orElseThrow(() -> new RemoteException(
                         "Las credenciales son incorrectas o el usuario no existe."
                 ))
@@ -46,6 +43,6 @@ public class AuthController extends UnicastRemoteObject implements IAuthControll
 
     @Override
     public void logout(TokenDTO tokenDto) throws RemoteException {
-        authService.borrarSesion(TokenAssembler.getDO(tokenDto));
+        authService.borrarSesion(TokenAssembler.dtoToDo(tokenDto));
     }
 }

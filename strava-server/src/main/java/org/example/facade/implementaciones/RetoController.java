@@ -1,46 +1,48 @@
 package org.example.facade.implementaciones;
 
 import org.example.entity.assembler.RetoAssembler;
-import org.example.entity.domain.RetoDO;
+import org.example.entity.assembler.TokenAssembler;
 import org.example.entity.dto.RetoDTO;
+import org.example.entity.dto.TokenDTO;
 import org.example.facade.interfaces.IRetoController;
 import org.example.service.RetoService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 // Aqui irian las rutas/metodos que se exportan
 public class RetoController extends UnicastRemoteObject implements IRetoController {
-
-    private final RetoService retoService = new RetoService();
+    private final RetoService retoService = RetoService.getInstance();
 
     public RetoController() throws RemoteException {
         super();
     }
 
     @Override
-    public List<RetoDTO> getRetos() throws RemoteException {
-        List<RetoDTO> retosDto = new ArrayList<>();
-        retoService.getRetos().forEach(reto -> retosDto.add(RetoAssembler.assemble(reto)));
-        return retosDto;
+    public void crearReto(TokenDTO tokenDto, RetoDTO retoDto) throws RemoteException {
+        try {
+            retoService.crearReto(TokenAssembler.dtoToDo(tokenDto), RetoAssembler.dtoToDo(retoDto));
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override
-    public RetoDTO getReto(Long id) throws RemoteException {
-        Optional<RetoDO> reto = retoService.getReto(id);
-
-        return RetoAssembler.assemble(
-                reto.orElseThrow(() ->
-                        new RemoteException("El reto con la ID \"" + id.toString() + "\" no existe.")
-                )
-        );
+    public void aceptarReto(TokenDTO tokenDto, Long retoId) throws RemoteException {
+        try {
+            retoService.aceptarReto(TokenAssembler.dtoToDo(tokenDto), retoId);
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override
-    public void crearReto(RetoDTO retoDto) throws RemoteException {
-        retoService.crearReto(retoDto);
+    public List<RetoDTO> getRetosActivos(TokenDTO tokenDto, Date fechaLimite) throws RemoteException {
+        // List<RetoDTO> retosDto = new ArrayList<>();
+        // retoService.getRetos().forEach(reto -> retosDto.add(RetoAssembler.assemble(reto)));
+        // return retosDto;
+        return List.of();
     }
 }

@@ -112,10 +112,10 @@ public class LoginFrame extends JFrame {
             credenciales.setEmail(usuarioField.getText());
             credenciales.setContrasenya(new String(contraField.getPassword()));
 
-            TokenDTO token = Cliente.authController.login(credenciales);
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. Token: " + token.getValor());
+            TokenDTO tokenSesion = Cliente.authController.login(credenciales);
+            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. Token: " + tokenSesion.getValor());
             dispose();
-            new MainFrame();
+            new MainFrame(tokenSesion);
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getCause());
         }

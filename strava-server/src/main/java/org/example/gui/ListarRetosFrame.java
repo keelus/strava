@@ -2,6 +2,7 @@ package org.example.gui;
 
 import org.example.Cliente;
 import org.example.entity.dto.RetoDTO;
+import org.example.entity.dto.TokenDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +10,11 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class ListarRetosFrame extends JFrame {
+    private TokenDTO tokenSesion;
 
-    public ListarRetosFrame() {
+    public ListarRetosFrame(TokenDTO tokenSesion) {
+        this.tokenSesion = tokenSesion;
+
         setTitle("Lista de Retos");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

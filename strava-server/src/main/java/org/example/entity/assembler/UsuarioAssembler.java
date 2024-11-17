@@ -4,7 +4,7 @@ import org.example.entity.domain.UsuarioDO;
 import org.example.entity.dto.UsuarioDTO;
 
 public class UsuarioAssembler {
-    public static UsuarioDTO assemble(UsuarioDO usuarioDo) {
+    public static UsuarioDTO doToDto(UsuarioDO usuarioDo) {
         UsuarioDTO usuarioDto = new UsuarioDTO();
 
         usuarioDto.setId(usuarioDo.getId());
@@ -22,7 +22,7 @@ public class UsuarioAssembler {
         return usuarioDto;
     }
 
-    public static UsuarioDO getDO(UsuarioDTO usuarioDto) {
+    public static UsuarioDO dtoToDo(UsuarioDTO usuarioDto) {
         UsuarioDO usuarioDo = new UsuarioDO();
 
         usuarioDo.setId(usuarioDto.getId());

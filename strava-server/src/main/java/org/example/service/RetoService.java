@@ -2,31 +2,63 @@ package org.example.service;
 
 import org.example.entity.assembler.RetoAssembler;
 import org.example.entity.domain.RetoDO;
+import org.example.entity.domain.TokenDO;
 import org.example.entity.dto.RetoDTO;
+import org.example.entity.dto.TokenDTO;
+import org.example.facade.implementaciones.AuthController;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class RetoService {
+    private static RetoService instance;
+
     private final Map<Long, RetoDO> retos = new HashMap<>();
+    // TODO: Retos aceptados?
 
-    public RetoService() {
+    private RetoService() {
     }
 
-    public List<RetoDO> getRetos() {
-        return new ArrayList<>(this.retos.values());
-    }
-
-    public Optional<RetoDO> getReto(Long id) {
-        if(retos.containsKey(id)) {
-            return Optional.of(retos.get(id));
+    public static RetoService getInstance() {
+        if(instance == null) {
+            instance = new RetoService();
         }
-        return Optional.empty();
+        return instance;
     }
 
-    public void crearReto(RetoDTO retoDto) {
-        RetoDO reto = RetoAssembler.getDO(retoDto);
-        reto.id = Long.valueOf(retos.size());
-        retos.put(reto.id, reto);
-        System.out.println("Reto creado: " + reto.nombre + " | " + reto.id.toString());
+    public void crearReto(TokenDO tokenDo, RetoDO retoDo) throws Exception {
+        // Comprobar si el token es valido
+        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+            retoDo.id = Long.valueOf(retos.size());
+            retos.put(retoDo.id, retoDo);
+            System.out.println("Reto creado: " + retoDo.nombre + " | " + retoDo.id.toString());
+        } else {
+            throw new Exception("El token de sesion no es valido.");
+        }
+    }
+    public void aceptarReto(TokenDO tokenDo, Long retoId) throws Exception {
+        // Comprobar si el token es valido
+        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+            // TODO
+            // retos.forEach(reto -> );
+            // retoDo.id = Long.valueOf(retos.size());
+            // retos.put(retoDo.id, retoDo);
+            // System.out.println("Reto creado: " + retoDo.nombre + " | " + retoDo.id.toString());
+        } else {
+            throw new Exception("El token de sesion no es valido.");
+        }
+    }
+
+    public List<RetoDO> getRetosActivos(TokenDO tokenDo, Date fechaLimite) throws Exception {
+        if (AuthService.getInstance().isTokenValido(tokenDo)) {
+            // TODO
+            // retos.forEach(reto -> );
+            // retoDo.id = Long.valueOf(retos.size());
+            // retos.put(retoDo.id, retoDo);
+            // System.out.println("Reto creado: " + retoDo.nombre + " | " + retoDo.id.toString());
+            return new ArrayList<>();
+        } else {
+            throw new Exception("El token de sesion no es valido.");
+        }
     }
 }
