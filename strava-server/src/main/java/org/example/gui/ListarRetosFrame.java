@@ -7,6 +7,7 @@ import org.example.entity.dto.TokenDTO;
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class ListarRetosFrame extends JFrame {
@@ -75,7 +76,7 @@ public class ListarRetosFrame extends JFrame {
 
     private void listarRetos(JTextArea textArea) {
         try {
-            List<RetoDTO> retos = Cliente.retoController.getRetos();
+            List<RetoDTO> retos = Cliente.retoController.getRetosActivos(tokenSesion, new Date());
             textArea.setText("");
             retos.forEach(reto -> textArea.append(reto.getNombre() + "\n"));
         } catch (RemoteException e) {

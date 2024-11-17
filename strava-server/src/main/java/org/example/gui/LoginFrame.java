@@ -7,6 +7,8 @@ import org.example.entity.dto.UsuarioDTO;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 public class LoginFrame extends JFrame {
@@ -86,24 +88,29 @@ public class LoginFrame extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(loginButton, gbc);
 
-        // boton registrar
-        JButton registrarseButton = new JButton("Registrarse");
-        registrarseButton.setFont(new Font("Roboto", Font.BOLD, 16));
-        registrarseButton.setBackground(new Color(209, 96, 36));
-        registrarseButton.setForeground(Color.WHITE);
-        registrarseButton.setFocusPainted(false);
-        registrarseButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        registrarseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        mainPanel.add(registrarseButton, gbc);
-
         loginButton.addActionListener(e -> iniciarSesion());
-        registrarseButton.addActionListener(e -> registrarUsuario());
+
+        JLabel loginLinkLabel = new JLabel("<html><u>¿No tienes una cuenta? Registrate</u></html>");
+        loginLinkLabel.setForeground(new Color(0, 184, 148));
+        loginLinkLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+        loginLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginLinkLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new RegisterFrame();
+                dispose();
+            }
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(loginLinkLabel, gbc);
 
         // Añadir el panel principal al frame
         add(mainPanel);
+        setVisible(true);
     }
 
     private void iniciarSesion() {
@@ -118,18 +125,6 @@ public class LoginFrame extends JFrame {
             new MainFrame(tokenSesion);
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getCause());
-        }
-    }
-
-    private void registrarUsuario() {
-        try {
-            UsuarioDTO usuario = new UsuarioDTO();
-            usuario.setEmail(usuarioField.getText());
-
-            Cliente.authController.registrar(usuario);
-            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
-        } catch (RemoteException e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getCause());
         }
     }
 }

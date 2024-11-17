@@ -31,10 +31,7 @@ public class Cliente {
             retoController = (IRetoController) registry.lookup("retoController");
 
             // Iniciar ventana login
-            SwingUtilities.invokeLater(() -> {
-                LoginFrame loginUI = new LoginFrame();
-                loginUI.setVisible(true);
-            });
+            SwingUtilities.invokeLater(LoginFrame::new);
             // ### CREAR USUARIO
 //            UsuarioDTO nuevoUsuario = new UsuarioDTO();
 //            nuevoUsuario.setEmail("email@gmail.com");
