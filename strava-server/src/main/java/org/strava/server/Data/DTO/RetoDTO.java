@@ -2,13 +2,14 @@ package org.strava.server.Data.DTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RetoDTO implements Serializable  {
     public Long id;
     public String nombre;
     public UsuarioDTO autor; // Esto se podria quitar? O en DO? Mirarlo
-    public String fechaInicio;
-    public String fechaFin;
+    public Date fechaInicio;
+    public Date fechaFin;
     public String tipoObjetivo;
     public int objetivo;
     public ArrayList<String> deporte;
@@ -37,19 +38,19 @@ public class RetoDTO implements Serializable  {
         this.autor = autor;
     }
 
-    public String getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public String getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 

@@ -1,31 +1,31 @@
 package org.strava.server;
 
+import org.strava.server.Data.DTO.UsuarioDTO;
 import org.strava.server.RemoteFachada.RemoteFachada;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Date;
 
 public class Servidor {
 
     public static void main(String[] args) {
         try {
             RemoteFachada remoteFachada = new RemoteFachada();
-            // AuthController authController = new AuthController();
-            // RetoController retoController = new RetoController();
 
-            // UsuarioDTO usuarioDto = new UsuarioDTO();
-            // usuarioDto.setEmail("admin");
-            // usuarioDto.setNombre("admin");
-            // usuarioDto.setMetodoRegistro("Google");
-            // usuarioDto.setFrecuenciaCardiacaMax(100);
-            // usuarioDto.setFrecuenciaCardiacaReposo(100);
-            // usuarioDto.setAlturaCm(100.0);
-            // usuarioDto.setFechaNacimiento(new Date());
-            //authController.registrar(usuarioDto);
+            // Registrar usuario de prueba
+            // TODO: Quitar esto
+            UsuarioDTO usuarioDto = new UsuarioDTO();
+            usuarioDto.setEmail("admin");
+            usuarioDto.setNombre("admin");
+            usuarioDto.setMetodoRegistro("Google");
+            usuarioDto.setFrecuenciaCardiacaMax(100);
+            usuarioDto.setFrecuenciaCardiacaReposo(100);
+            usuarioDto.setAlturaCm(100.0);
+            usuarioDto.setFechaNacimiento(new Date());
+            remoteFachada.authRegistrar(usuarioDto);
 
             Registry registry = LocateRegistry.createRegistry(4444);
-            //registry.rebind("authController", authController);
-            //registry.rebind("retoController", retoController);
             registry.rebind("remoteFachada", remoteFachada);
 
             System.out.println("Se ha iniciado el servidor (RMI's Version)");

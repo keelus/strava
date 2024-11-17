@@ -54,6 +54,13 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     @Override
     public void retoCrear(TokenDTO tokenDto, RetoDTO retoDto) throws RemoteException{
         try {
+            System.out.println("== INFO RETO==");
+            System.out.println(retoDto.getNombre());
+            System.out.println(retoDto.getFechaInicio());
+            System.out.println(retoDto.getFechaFin());
+            System.out.println(retoDto.getObjetivo());
+            System.out.println(retoDto.getTipoObjetivo());
+            System.out.println(retoDto.getDeporte());
             retoService.crearReto(TokenAssembler.dtoToDo(tokenDto), RetoAssembler.dtoToDo(retoDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
@@ -75,7 +82,9 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
         try {
             List<RetoDO> retosActivosDO = retoService.getRetosActivos(tokenDo, fechaLimite);
             List<RetoDTO> retosActivos = new ArrayList<>();
-            retosActivosDO.forEach(retoDo -> retosActivos.add(RetoAssembler.doToDto(retoDo)));
+            for(RetoDO retoActivoDo : retosActivosDO) {
+                retosActivos.add(RetoAssembler.doToDto(retoActivoDo));
+            }
             return retosActivos;
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());

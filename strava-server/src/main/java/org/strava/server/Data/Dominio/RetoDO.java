@@ -6,7 +6,7 @@ import java.util.Date;
 public class RetoDO {
     public Long id;
     public String nombre;
-    public UsuarioDO autor;
+    public Long autorId;
     public Date fechaInicio;
     public Date fechaFin;
     public String tipoObjetivo;
@@ -29,12 +29,12 @@ public class RetoDO {
         this.nombre = nombre;
     }
 
-    public UsuarioDO getAutor() {
-        return autor;
+    public Long getAutorId() {
+        return autorId;
     }
 
-    public void setAutor(UsuarioDO autor) {
-        this.autor = autor;
+    public void setAutorId(Long autorId) {
+        this.autorId = autorId;
     }
 
     public Date getFechaInicio() {

@@ -21,6 +21,14 @@ public class AuthService {
         return instance;
     }
 
+    public UsuarioDO conseguirUsuario(Long usuarioId) throws Exception {
+        for(UsuarioDO usuarioDo : usuarios) {
+            if(usuarioDo.getId().equals(usuarioId))
+                return usuarioDo;
+        }
+        throw new Exception("No se han encontrado usuarios con esa ID.");
+    }
+
     public void registrarUsuario(UsuarioDO nuevoUsuarioDo) throws  Exception {
         for(UsuarioDO usuarioDo: usuarios) {
             if(usuarioDo.getEmail().equalsIgnoreCase(nuevoUsuarioDo.getEmail())) {
