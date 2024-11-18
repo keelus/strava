@@ -106,7 +106,7 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 4;
         mainPanel.add(alturaCmField, gbc);
 
-        JLabel fcMaxLabel = new JLabel("Frecuencia Cardiaca Msaxima:");
+        JLabel fcMaxLabel = new JLabel("Frecuencia Cardiaca Maxima:");
         fcMaxLabel.setForeground(Color.WHITE);
         fcMaxLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;

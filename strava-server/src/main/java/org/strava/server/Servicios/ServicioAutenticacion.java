@@ -44,9 +44,18 @@ public class ServicioAutenticacion {
         for(UsuarioDO usuarioDo : usuarios) {
             if(usuarioDo.getEmail().equalsIgnoreCase(credencialesDo.getEmail())) {
                 // Autentificacion de Meta/Google
+                // ...
 
                 // Generar token y crear sesion
-                TokenDO token = new TokenDO("token aleatorio aqui");
+                String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                int longitudToken = 10;
+                char[] tokenAleatorio = new char[longitudToken];
+                for(int i = 0; i < longitudToken; i++) {
+                    tokenAleatorio[i] = caracteres.charAt((int)(Math.random() * caracteres.length()));
+                }
+                String valorTokenAleatorio = new String(tokenAleatorio);
+
+                TokenDO token = new TokenDO(valorTokenAleatorio);
                 sesiones.put(token, usuarioDo);
 
                 return Optional.of(token);
