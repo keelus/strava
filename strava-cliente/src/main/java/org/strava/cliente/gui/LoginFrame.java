@@ -1,8 +1,6 @@
 package org.strava.cliente.gui;
 
-import org.strava.cliente.Cliente;
-import org.strava.server.Data.DTO.TokenDTO;
-import org.strava.server.Data.DTO.LoginCredencialesDTO;
+import org.strava.cliente.Controlador;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,7 +85,15 @@ public class LoginFrame extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(loginButton, gbc);
 
-        loginButton.addActionListener(e -> iniciarSesion());
+        loginButton.addActionListener(e -> {
+            try {
+                Controlador.getInstance().iniciarSesion(usuarioField.getText(), contraField.getPassword());
+                dispose();
+                new MainFrame();
+            } catch (RemoteException err) {
+                JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + err.getCause());
+            }
+        });
 
         JLabel loginLinkLabel = new JLabel("<html><u>¿No tienes una cuenta? Registrate</u></html>");
         loginLinkLabel.setForeground(new Color(0, 184, 148));
@@ -113,17 +119,5 @@ public class LoginFrame extends JFrame {
     }
 
     private void iniciarSesion() {
-        try {
-            LoginCredencialesDTO credenciales = new LoginCredencialesDTO();
-            credenciales.setEmail(usuarioField.getText());
-            credenciales.setContrasenya(new String(contraField.getPassword()));
-
-            TokenDTO tokenSesion = Cliente.remoteFachada.authLogin(credenciales);
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. Token: " + tokenSesion.getValor());
-            dispose();
-            new MainFrame(tokenSesion);
-        } catch (RemoteException e) {
-            JOptionPane.showMessageDialog(this, "Error al iniciar sesión: " + e.getCause());
-        }
     }
 }

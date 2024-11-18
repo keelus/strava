@@ -23,7 +23,7 @@
     </target>
 
     <target name="2.client" depends="1.build" description="Runs the Client">
-        <java classname="org.strava.cliente.Cliente" classpathref="full.classpath" fork="true">
+        <java classname="org.strava.cliente.Main" classpathref="full.classpath" fork="true">
             <jvmarg value="-Djava.security.policy=${policy.file}"/>
             <arg value="${registry.ip}"/>
             <arg value="${registry.port}"/>

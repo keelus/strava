@@ -1,6 +1,6 @@
 package org.strava.cliente.gui;
 
-import org.strava.cliente.Cliente;
+import org.strava.cliente.Controlador;
 import org.strava.server.Data.DTO.UsuarioNuevoDTO;
 import org.strava.server.Data.Enums.MetodoRegistro;
 
@@ -200,7 +200,7 @@ public class RegisterFrame extends JFrame {
             usuario.setFrecuenciaCardiacaMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
             usuario.setFrecuenciaCardiacaReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
 
-            Cliente.remoteFachada.authRegistrar(usuario);
+            Controlador.getInstance().registrarUsuario(usuario);
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
             new LoginFrame();
             dispose();

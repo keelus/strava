@@ -1,6 +1,6 @@
 package org.strava.cliente.gui;
 
-import org.strava.cliente.Cliente;
+import org.strava.cliente.Controlador;
 import org.strava.server.Data.DTO.RetoNuevoDTO;
 import org.strava.server.Data.DTO.TokenDTO;
 import org.strava.server.Data.Enums.Deporte;
@@ -243,7 +243,7 @@ public class CrearRetoFrame extends JFrame {
 
             reto.setDeporte(deportes);
 
-            Cliente.remoteFachada.retoCrear(tokenSesion, reto);
+            Controlador.getInstance().crearReto(reto);
             JOptionPane.showMessageDialog(this, "Reto creado exitosamente.");
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al crear el reto: " + e.getCause());

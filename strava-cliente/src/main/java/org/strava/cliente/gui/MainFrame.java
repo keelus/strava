@@ -8,7 +8,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private TokenDTO tokenSesion;
 
-    public MainFrame(TokenDTO tokenSesion) {
+    public MainFrame() {
         this.tokenSesion = tokenSesion;
 
         setTitle("Menú Principal");

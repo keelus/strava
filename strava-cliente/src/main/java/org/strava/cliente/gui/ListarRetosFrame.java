@@ -1,6 +1,6 @@
 package org.strava.cliente.gui;
 
-import org.strava.cliente.Cliente;
+import org.strava.cliente.Controlador;
 import org.strava.server.Data.DTO.RetoDTO;
 import org.strava.server.Data.DTO.TokenDTO;
 
@@ -76,9 +76,9 @@ public class ListarRetosFrame extends JFrame {
 
     private void listarRetos(JTextArea textArea) {
         try {
-            List<RetoDTO> retos = Cliente.remoteFachada.retoListarActivos(tokenSesion, new Date());
+            List<RetoDTO> retosObtenidos = Controlador.getInstance().conseguirRetosActivos(new Date());
             textArea.setText("");
-            retos.forEach(reto -> textArea.append(reto.getNombre() + "\n"));
+            retosObtenidos.forEach(reto -> textArea.append(reto.getNombre() + "\n"));
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al listar retos: " + e.getCause());
         }
