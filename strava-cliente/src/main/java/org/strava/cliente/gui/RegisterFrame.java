@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 import java.util.Date;
+import java.util.Objects;
 
 public class RegisterFrame extends JFrame {
 
@@ -188,7 +189,7 @@ public class RegisterFrame extends JFrame {
         try {
             UsuarioNuevoDTO usuario = new UsuarioNuevoDTO();
             usuario.setEmail(emailField.getText());
-            if(((String)metodoRegistroComboBox.getSelectedItem()).equals("Meta")) {
+            if(Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Meta")) {
                 usuario.setMetodoRegistro(MetodoRegistro.Meta);
             } else {
                 usuario.setMetodoRegistro(MetodoRegistro.Google);

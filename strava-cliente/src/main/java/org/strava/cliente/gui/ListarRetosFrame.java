@@ -78,7 +78,17 @@ public class ListarRetosFrame extends JFrame {
         try {
             List<RetoDTO> retosObtenidos = Controlador.getInstance().conseguirRetosActivos(new Date());
             textArea.setText("");
-            retosObtenidos.forEach(reto -> textArea.append(reto.getNombre() + "\n"));
+            retosObtenidos.forEach(reto ->
+                    textArea.append(
+                            "RETO " + reto.getId() + "\n"
+                            + "Nombre: " + reto.getNombre() + "\n"
+                            + "Autor: " + reto.getAutor().getNombre() + "\n"
+                            + "Deporte: " + reto.getDeporte() + "\n"
+                            + "Tipo Objetivo: " + reto.getTipoObjetivo() + "\n"
+                            + "Valor Objetivo: " + reto.getValorObjetivo() + "\n"
+                            + "Inicio: " + reto.getFechaInicio() + "\n"
+                            + "Fin: " + reto.getFechaFin() + "\n"
+                            + "\n"));
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al listar retos: " + e.getCause());
         }
