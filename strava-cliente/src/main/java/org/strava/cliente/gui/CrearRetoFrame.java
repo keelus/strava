@@ -1,8 +1,10 @@
 package org.strava.cliente.gui;
 
 import org.strava.cliente.Cliente;
-import org.strava.server.Data.DTO.RetoDTO;
+import org.strava.server.Data.DTO.RetoNuevoDTO;
 import org.strava.server.Data.DTO.TokenDTO;
+import org.strava.server.Data.Enums.Deporte;
+import org.strava.server.Data.Enums.TipoObjetivo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -220,19 +222,23 @@ public class CrearRetoFrame extends JFrame {
                 return;
             }
 
-            RetoDTO reto = new RetoDTO();
+            RetoNuevoDTO reto = new RetoNuevoDTO();
             reto.setNombre(nombreRetoField.getText());
             reto.setFechaInicio((Date)fechaInicioSpinner.getValue());
             reto.setFechaFin((Date)fechaFinSpinner.getValue());
-            reto.setObjetivo(Integer.valueOf(valorObjetivoField.getText()));
-            reto.setTipoObjetivo(tipoObjetivoComboBox.getSelectedItem().toString());
+            reto.setValorObjetivo(Integer.valueOf(valorObjetivoField.getText()));
+            if(tipoObjetivoComboBox.getSelectedItem().toString().equals("Distancia")) {
+                reto.setTipoObjetivo(TipoObjetivo.Distancia);
+            } else {
+                reto.setTipoObjetivo(TipoObjetivo.Tiempo);
+            }
 
-            ArrayList<String> deportes = new ArrayList<>();
+            ArrayList<Deporte> deportes = new ArrayList<>();
             if(deporteRunningCheckbox.isSelected()) {
-                deportes.add("Running");
+                deportes.add(Deporte.Running);
             }
             if(deporteCiclismoCheckbox.isSelected()) {
-                deportes.add("Ciclismo");
+                deportes.add(Deporte.Ciclismo);
             }
 
             reto.setDeporte(deportes);

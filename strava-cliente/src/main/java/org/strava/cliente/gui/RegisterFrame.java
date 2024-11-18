@@ -1,7 +1,8 @@
 package org.strava.cliente.gui;
 
 import org.strava.cliente.Cliente;
-import org.strava.server.Data.DTO.UsuarioDTO;
+import org.strava.server.Data.DTO.UsuarioNuevoDTO;
+import org.strava.server.Data.Enums.MetodoRegistro;
 
 import javax.swing.*;
 import java.awt.*;
@@ -185,9 +186,13 @@ public class RegisterFrame extends JFrame {
 
     private void registrarUsuario() {
         try {
-            UsuarioDTO usuario = new UsuarioDTO();
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO();
             usuario.setEmail(emailField.getText());
-            usuario.setMetodoRegistro((String) metodoRegistroComboBox.getSelectedItem());
+            if(((String)metodoRegistroComboBox.getSelectedItem()).equals("Meta")) {
+                usuario.setMetodoRegistro(MetodoRegistro.Meta);
+            } else {
+                usuario.setMetodoRegistro(MetodoRegistro.Google);
+            }
             usuario.setNombre(nombreField.getText());
             usuario.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
             usuario.setPesoKg(Double.parseDouble(pesoKgField.getText()));

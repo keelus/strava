@@ -4,14 +4,23 @@ import java.time.Duration;
 import java.util.Date;
 
 public class SesionEntrenamientoDO {
-    public Long id;
-    public String titulo;
+    private Long id;
+    private String titulo;
+    private float distanciaKm;
+    private Date fechaInicio;
+    private int horaInicio;
+    private Duration duracion;
 
-    public float distanciaKm;
+    public SesionEntrenamientoDO() {}
 
-    public Date fechaInicio;
-    public int horaInicio;
-    public Duration duracion;
+    public SesionEntrenamientoDO(SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo, Long sesionEntrenamientoId) {
+        this.id = sesionEntrenamientoId;
+        this.titulo = sesionEntrenamientoNuevoDo.getTitulo();
+        this.distanciaKm = sesionEntrenamientoNuevoDo.getDistanciaKm();
+        this.fechaInicio = sesionEntrenamientoNuevoDo.getFechaInicio();
+        this.horaInicio = sesionEntrenamientoNuevoDo.getHoraInicio();
+        this.duracion = sesionEntrenamientoNuevoDo.getDuracion();
+    }
 
     public Long getId() {
         return id;

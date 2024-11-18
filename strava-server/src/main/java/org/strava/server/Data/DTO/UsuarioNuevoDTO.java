@@ -5,8 +5,7 @@ import org.strava.server.Data.Enums.MetodoRegistro;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UsuarioDTO implements Serializable {
-    private Long id;
+public class UsuarioNuevoDTO implements Serializable {
     private String email;
     private String nombre;
     private MetodoRegistro metodoRegistro;
@@ -15,14 +14,6 @@ public class UsuarioDTO implements Serializable {
     private Double alturaCm;
     private Integer frecuenciaCardiacaMax;
     private Integer frecuenciaCardiacaReposo;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;

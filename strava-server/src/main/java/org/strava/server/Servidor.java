@@ -1,6 +1,7 @@
 package org.strava.server;
 
-import org.strava.server.Data.DTO.UsuarioDTO;
+import org.strava.server.Data.DTO.UsuarioNuevoDTO;
+import org.strava.server.Data.Enums.MetodoRegistro;
 import org.strava.server.RemoteFachada.RemoteFachada;
 
 import java.rmi.registry.LocateRegistry;
@@ -15,14 +16,15 @@ public class Servidor {
 
             // Registrar usuario de prueba
             // TODO: Quitar esto
-            UsuarioDTO usuarioDto = new UsuarioDTO();
+            UsuarioNuevoDTO usuarioDto = new UsuarioNuevoDTO();
             usuarioDto.setEmail("admin");
             usuarioDto.setNombre("admin");
-            usuarioDto.setMetodoRegistro("Google");
+            usuarioDto.setMetodoRegistro(MetodoRegistro.Google);
             usuarioDto.setFrecuenciaCardiacaMax(100);
             usuarioDto.setFrecuenciaCardiacaReposo(100);
             usuarioDto.setAlturaCm(100.0);
             usuarioDto.setFechaNacimiento(new Date());
+
             remoteFachada.authRegistrar(usuarioDto);
 
             Registry registry = LocateRegistry.createRegistry(4444);

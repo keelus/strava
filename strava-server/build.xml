@@ -26,6 +26,7 @@
         <jar destfile="${dist.dir}/${export.file}">
             <fileset dir="${build.dir}" includes="**/IRemoteFachada.class" />
             <fileset dir="${build.dir}" includes="**/Data/DTO/*.class" />
+            <fileset dir="${build.dir}" includes="**/Data/Enums/*.class" />
         </jar>
     </target>
 

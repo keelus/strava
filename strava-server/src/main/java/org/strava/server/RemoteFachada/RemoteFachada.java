@@ -3,7 +3,7 @@ package org.strava.server.RemoteFachada;
 import org.strava.server.Data.DTO.*;
 import org.strava.server.Data.DTO.Assemblers.*;
 import org.strava.server.Data.Dominio.RetoDO;
-import org.strava.server.Data.Dominio.SesionEntrenamientoDO;
+import org.strava.server.Data.Dominio.SesionEntrenamientoNuevoDO;
 import org.strava.server.Data.Dominio.TokenDO;
 import org.strava.server.Servicios.ServicioAutenticacion;
 import org.strava.server.Servicios.ServicioReto;
@@ -26,9 +26,9 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     }
     // AUTH
     @Override
-    public void authRegistrar(UsuarioDTO usuarioDto) throws RemoteException {
+    public void authRegistrar(UsuarioNuevoDTO usuarioNuevoDto) throws RemoteException {
         try {
-            servicioAutenticacion.registrarUsuario(UsuarioAssembler.dtoToDo(usuarioDto));
+            servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -52,16 +52,16 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
 
     // RETO
     @Override
-    public void retoCrear(TokenDTO tokenDto, RetoDTO retoDto) throws RemoteException{
+    public void retoCrear(TokenDTO tokenDto, RetoNuevoDTO retoNuevoDto) throws RemoteException{
         try {
             System.out.println("== INFO RETO==");
-            System.out.println(retoDto.getNombre());
-            System.out.println(retoDto.getFechaInicio());
-            System.out.println(retoDto.getFechaFin());
-            System.out.println(retoDto.getObjetivo());
-            System.out.println(retoDto.getTipoObjetivo());
-            System.out.println(retoDto.getDeporte());
-            servicioReto.crearReto(TokenAssembler.dtoToDo(tokenDto), RetoAssembler.dtoToDo(retoDto));
+            System.out.println(retoNuevoDto.getNombre());
+            System.out.println(retoNuevoDto.getFechaInicio());
+            System.out.println(retoNuevoDto.getFechaFin());
+            System.out.println(retoNuevoDto.getValorObjetivo());
+            System.out.println(retoNuevoDto.getTipoObjetivo());
+            System.out.println(retoNuevoDto.getDeporte());
+            servicioReto.crearReto(TokenAssembler.dtoToDo(tokenDto), RetoNuevoAssembler.dtoToDo(retoNuevoDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -93,11 +93,11 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
 
     // SESION ENTRAMIENTO
     @Override
-    public void sesionEntrenamientoCrear(TokenDTO tokenDto, SesionEntrenamientoDTO sesionEntrenamientoDto) throws RemoteException{
+    public void sesionEntrenamientoCrear(TokenDTO tokenDto, SesionEntrenamientoNuevoDTO sesionEntrenamientoNuevoDto) throws RemoteException{
         TokenDO tokenDo = TokenAssembler.dtoToDo(tokenDto);
-        SesionEntrenamientoDO sesionEntrenamientoDo = SesionEntrenamientoAssembler.dtoToDo(sesionEntrenamientoDto);
+        SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo = SesionEntrenamientoNuevoAssembler.dtoToDo(sesionEntrenamientoNuevoDto);
         try {
-            servicioSesionEntrenamiento.crearSesionEntrenamiento(tokenDo, sesionEntrenamientoDo);
+            servicioSesionEntrenamiento.crearSesionEntrenamiento(tokenDo, sesionEntrenamientoNuevoDo);
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }

@@ -2,6 +2,7 @@ package org.strava.server.Servicios;
 
 import org.strava.server.Data.Dominio.SesionEntrenamientoDO;
 
+import org.strava.server.Data.Dominio.SesionEntrenamientoNuevoDO;
 import org.strava.server.Data.Dominio.TokenDO;
 
 import java.util.*;
@@ -20,11 +21,10 @@ public class ServicioSesionEntrenamiento {
         return instance;
     }
 
-    public void crearSesionEntrenamiento(TokenDO tokenDo, SesionEntrenamientoDO sesionEntrenamientoDo) throws Exception {
+    public void crearSesionEntrenamiento(TokenDO tokenDo, SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo) throws Exception {
         if(ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
-            sesionEntrenamientoDo.id = Long.valueOf(sesionesEntrenamiento.size());
-            sesionesEntrenamiento.put(sesionEntrenamientoDo.id, sesionEntrenamientoDo);
-            System.out.println("Sesion de entrenamiento creada: " + sesionEntrenamientoDo.titulo + " | " + sesionEntrenamientoDo.id.toString());
+            SesionEntrenamientoDO sesionEntrenamientoDo = new SesionEntrenamientoDO(sesionEntrenamientoNuevoDo, Long.valueOf(sesionesEntrenamiento.size()));
+            sesionesEntrenamiento.put(sesionEntrenamientoDo.getId(), sesionEntrenamientoDo);
         } else {
             throw new Exception("El token de sesion no es valido.");
         }

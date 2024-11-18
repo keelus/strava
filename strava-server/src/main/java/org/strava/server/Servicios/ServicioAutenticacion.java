@@ -3,6 +3,7 @@ package org.strava.server.Servicios;
 import org.strava.server.Data.Dominio.LoginCredencialesDO;
 import org.strava.server.Data.Dominio.TokenDO;
 import org.strava.server.Data.Dominio.UsuarioDO;
+import org.strava.server.Data.Dominio.UsuarioNuevoDO;
 
 import java.util.*;
 
@@ -29,15 +30,14 @@ public class ServicioAutenticacion {
         throw new Exception("No se han encontrado usuarios con esa ID.");
     }
 
-    public void registrarUsuario(UsuarioDO nuevoUsuarioDo) throws  Exception {
+    public void registrarUsuario(UsuarioNuevoDO nuevoUsuarioDo) throws  Exception {
         for(UsuarioDO usuarioDo: usuarios) {
             if(usuarioDo.getEmail().equalsIgnoreCase(nuevoUsuarioDo.getEmail())) {
                 throw new Exception("Ya existe un usuario con ese correo");
             }
         }
 
-        nuevoUsuarioDo.setId(Long.valueOf(usuarios.size()));
-        usuarios.add(nuevoUsuarioDo);
+        usuarios.add(new UsuarioDO(nuevoUsuarioDo, Long.valueOf(usuarios.size())));
     }
 
     public Optional<TokenDO> crearSesion(LoginCredencialesDO credencialesDo) {

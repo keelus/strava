@@ -4,21 +4,12 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.Date;
 
-public class SesionEntrenamientoDTO implements Serializable {
-    private Long id;
+public class SesionEntrenamientoNuevoDTO implements Serializable {
     private String titulo;
     private float distanciaKm;
     private Date fechaInicio;
     private int horaInicio;
     private Duration duracion;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitulo() {
         return titulo;

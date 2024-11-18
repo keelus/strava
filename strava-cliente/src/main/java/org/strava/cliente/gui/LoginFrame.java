@@ -2,7 +2,6 @@ package org.strava.cliente.gui;
 
 import org.strava.cliente.Cliente;
 import org.strava.server.Data.DTO.TokenDTO;
-import org.strava.server.Data.DTO.UsuarioDTO;
 import org.strava.server.Data.DTO.LoginCredencialesDTO;
 
 import javax.swing.*;

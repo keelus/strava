@@ -1,6 +1,7 @@
 package org.strava.server.Servicios;
 
 import org.strava.server.Data.Dominio.RetoDO;
+import org.strava.server.Data.Dominio.RetoNuevoDO;
 import org.strava.server.Data.Dominio.TokenDO;
 import org.strava.server.Data.Dominio.UsuarioDO;
 
@@ -25,13 +26,15 @@ public class ServicioReto {
         return instance;
     }
 
-    public void crearReto(TokenDO tokenDo, RetoDO retoDo) throws Exception {
+    public void crearReto(TokenDO tokenDo, RetoNuevoDO retoNuevoDo) throws Exception {
         // Comprobar si el token es valido
         if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
-            retoDo.id = Long.valueOf(retos.size());
-            retoDo.autorId = usuarioDo.getId();
-            retos.put(retoDo.id, retoDo);
+
+            RetoDO retoDo = new RetoDO(retoNuevoDo, Long.valueOf(retos.size()));
+            retoDo.setAutorId(usuarioDo.getId());
+
+            retos.put(retoDo.getId(), retoDo);
         } else {
             throw new Exception("El token de sesion no es valido.");
         }

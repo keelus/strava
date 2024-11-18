@@ -1,17 +1,33 @@
 package org.strava.server.Data.Dominio;
 
+import org.strava.server.Data.Enums.Deporte;
+import org.strava.server.Data.Enums.TipoObjetivo;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class RetoDO {
-    public Long id;
-    public String nombre;
-    public Long autorId;
-    public Date fechaInicio;
-    public Date fechaFin;
-    public String tipoObjetivo;
-    public int objetivo;
-    public ArrayList<String> deporte;
+    private Long id;
+    private String nombre;
+    private Long autorId;
+    private Date fechaInicio;
+    private Date fechaFin;
+    private TipoObjetivo tipoObjetivo;
+    private float valorObjetivo;
+    private ArrayList<Deporte> deporte;
+
+    public RetoDO(){}
+
+    public RetoDO(RetoNuevoDO retoNuevoDo, Long retoId) {
+        this.id = retoId;
+        this.nombre = retoNuevoDo.getNombre();
+        //this.autorId = retoNuevoDo.ge();
+        this.fechaInicio = retoNuevoDo.getFechaInicio();
+        this.fechaFin = retoNuevoDo.getFechaFin();
+        this.tipoObjetivo = retoNuevoDo.getTipoObjetivo();
+        this.valorObjetivo = retoNuevoDo.getValorObjetivo();
+        this.deporte = retoNuevoDo.getDeporte();
+    }
 
     public Long getId() {
         return id;
@@ -53,27 +69,27 @@ public class RetoDO {
         this.fechaFin = fechaFin;
     }
 
-    public String getTipoObjetivo() {
+    public TipoObjetivo getTipoObjetivo() {
         return tipoObjetivo;
     }
 
-    public void setTipoObjetivo(String tipoObjetivo) {
+    public void setTipoObjetivo(TipoObjetivo tipoObjetivo) {
         this.tipoObjetivo = tipoObjetivo;
     }
 
-    public int getObjetivo() {
-        return objetivo;
+    public float getValorObjetivo() {
+        return valorObjetivo;
     }
 
-    public void setObjetivo(int objetivo) {
-        this.objetivo = objetivo;
+    public void setValorObjetivo(float valorObjetivo) {
+        this.valorObjetivo = valorObjetivo;
     }
 
-    public ArrayList<String> getDeporte() {
+    public ArrayList<Deporte> getDeporte() {
         return deporte;
     }
 
-    public void setDeporte(ArrayList<String> deporte) {
+    public void setDeporte(ArrayList<Deporte> deporte) {
         this.deporte = deporte;
     }
 }

@@ -9,35 +9,29 @@ public class RetoAssembler {
     public static RetoDTO doToDto(RetoDO reto) throws Exception{
         RetoDTO retoDto = new RetoDTO();
 
-        retoDto.setId(reto.id);
-        retoDto.setNombre(reto.nombre);
-
-        // TODO: Hacer estas
-        UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuario(reto.autorId);
+        retoDto.setId(reto.getId());
+        retoDto.setNombre(reto.getNombre());
+        UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuario(reto.getAutorId());
         retoDto.setAutor(UsuarioAssembler.doToDto(usuarioDo));
-
-        retoDto.setDeporte(reto.deporte);
-        retoDto.setObjetivo(reto.objetivo);
-        retoDto.setTipoObjetivo(reto.tipoObjetivo);
-        retoDto.setFechaFin(reto.fechaFin);
-        retoDto.setFechaInicio(reto.fechaInicio);
+        retoDto.setDeporte(reto.getDeporte());
+        retoDto.setValorObjetivo(reto.getValorObjetivo());
+        retoDto.setTipoObjetivo(reto.getTipoObjetivo());
+        retoDto.setFechaInicio(reto.getFechaInicio());
+        retoDto.setFechaFin(reto.getFechaFin());
 
         return retoDto;
     }
     public static RetoDO dtoToDo(RetoDTO retoDto) {
         RetoDO retoDo = new RetoDO();
 
-        retoDo.setNombre(retoDto.nombre);
-        retoDo.setId(retoDto.id);
-
-        if(retoDto.autor != null) // Prevenir null, pues al crearlo lo asigna el servidor la 1a vez
-            retoDo.setAutorId(retoDto.autor.getId());
-
-        retoDo.setDeporte(retoDto.deporte);
-        retoDo.setObjetivo(retoDto.objetivo);
-        retoDo.setTipoObjetivo(retoDto.tipoObjetivo);
-        retoDo.setFechaFin(retoDto.fechaFin);
-        retoDo.setFechaInicio(retoDto.fechaInicio);
+        retoDo.setNombre(retoDto.getNombre());
+        retoDo.setId(retoDto.getId());
+        retoDo.setAutorId(retoDto.getAutor().getId());
+        retoDo.setDeporte(retoDto.getDeporte());
+        retoDo.setValorObjetivo(retoDto.getValorObjetivo());
+        retoDo.setTipoObjetivo(retoDto.getTipoObjetivo());
+        retoDo.setFechaInicio(retoDto.getFechaInicio());
+        retoDo.setFechaFin(retoDto.getFechaFin());
 
         return retoDo;
     }

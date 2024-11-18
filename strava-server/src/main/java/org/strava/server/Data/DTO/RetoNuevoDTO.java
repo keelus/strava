@@ -7,23 +7,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RetoDTO implements Serializable  {
-    private Long id;
+public class RetoNuevoDTO implements Serializable  {
     private String nombre;
-    private UsuarioDTO autor; // Esto se podria quitar? O en DO? Mirarlo
     private Date fechaInicio;
     private Date fechaFin;
     private TipoObjetivo tipoObjetivo;
     private float valorObjetivo;
     private ArrayList<Deporte> deporte;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -31,14 +21,6 @@ public class RetoDTO implements Serializable  {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public UsuarioDTO getAutor() {
-        return autor;
-    }
-
-    public void setAutor(UsuarioDTO autor) {
-        this.autor = autor;
     }
 
     public Date getFechaInicio() {
