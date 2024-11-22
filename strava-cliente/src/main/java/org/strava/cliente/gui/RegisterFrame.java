@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public class RegisterFrame extends JFrame {
-    private JTextField emailField;
     private JTextField nombreField;
     private JTextField pesoKgField;
     private JTextField alturaCmField;
@@ -23,12 +22,11 @@ public class RegisterFrame extends JFrame {
     private JComboBox<String> metodoRegistroComboBox;
     private JSpinner fechaNacimientoSpinner;
 
-    private JPanel panelServicio;
-    private JLabel loginIconLabel;
+    private PanelServicioExterno panelServicio;
 
     public RegisterFrame() {
         setTitle("Registrarse");
-        setSize(700, 700);
+        setSize(700, 900);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -48,118 +46,140 @@ public class RegisterFrame extends JFrame {
         gbc.weightx = 0;
         mainPanel.add(iconoLabel, gbc);
 
+        JLabel categoriaLabel0 = new JLabel("Datos obligatorios");
+        categoriaLabel0.setForeground(Color.WHITE);
+        categoriaLabel0.setFont(new Font("Roboto", Font.BOLD, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        mainPanel.add(categoriaLabel0, gbc);
 
         gbc.gridwidth = 1;
         JLabel nombreLabel = new JLabel("Nombre:");
         nombreLabel.setForeground(Color.WHITE);
         nombreLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         mainPanel.add(nombreLabel, gbc);
 
         nombreField = new JTextField(20);
+        nombreField.setFont(new Font("Roboto", Font.PLAIN, 14));
+        nombreField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         mainPanel.add(nombreField, gbc);
 
         JLabel fechaNacimientoLabel = new JLabel("Fecha de Nacimiento:");
         fechaNacimientoLabel.setForeground(Color.WHITE);
         fechaNacimientoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         mainPanel.add(fechaNacimientoLabel, gbc);
 
         SpinnerDateModel dateModel = new SpinnerDateModel();
         fechaNacimientoSpinner = new JSpinner(dateModel);
+        fechaNacimientoSpinner .setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 150)));
         fechaNacimientoSpinner.setFont(new Font("Roboto", Font.PLAIN, 14));
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(fechaNacimientoSpinner, "yyyy-MM-dd");
         fechaNacimientoSpinner.setEditor(dateEditor);
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         mainPanel.add(fechaNacimientoSpinner, gbc);
+
+        JLabel categoriaLabel1 = new JLabel("Datos opcionales");
+        categoriaLabel1.setForeground(Color.WHITE);
+        categoriaLabel1.setFont(new Font("Roboto", Font.BOLD, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        mainPanel.add(categoriaLabel1, gbc);
 
         JLabel pesoLabel = new JLabel("Peso (Kg):");
         pesoLabel.setForeground(Color.WHITE);
         pesoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         mainPanel.add(pesoLabel, gbc);
 
         pesoKgField = new JTextField(20);
+        pesoKgField.setFont(new Font("Roboto", Font.PLAIN, 14));
+        pesoKgField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         mainPanel.add(pesoKgField, gbc);
 
         JLabel alturaLabel = new JLabel("Altura (cm):");
         alturaLabel.setForeground(Color.WHITE);
         alturaLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         mainPanel.add(alturaLabel, gbc);
 
         alturaCmField = new JTextField(20);
+        alturaCmField.setFont(new Font("Roboto", Font.PLAIN, 14));
+        alturaCmField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         mainPanel.add(alturaCmField, gbc);
 
         JLabel fcMaxLabel = new JLabel("Frecuencia Cardiaca Maxima:");
         fcMaxLabel.setForeground(Color.WHITE);
         fcMaxLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         mainPanel.add(fcMaxLabel, gbc);
 
         frecuenciaCardiacaMaxField = new JTextField(20);
+        frecuenciaCardiacaMaxField.setFont(new Font("Roboto", Font.PLAIN, 14));
+        frecuenciaCardiacaMaxField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         mainPanel.add(frecuenciaCardiacaMaxField, gbc);
 
         JLabel fcReposoLabel = new JLabel("Frecuencia Cardiaca en Reposo:");
         fcReposoLabel.setForeground(Color.WHITE);
         fcReposoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         mainPanel.add(fcReposoLabel, gbc);
 
         frecuenciaCardiacaReposoField = new JTextField(20);
+        frecuenciaCardiacaReposoField.setFont(new Font("Roboto", Font.PLAIN, 14));
+        frecuenciaCardiacaReposoField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         mainPanel.add(frecuenciaCardiacaReposoField, gbc);
+
+        JLabel categoriaLabel2 = new JLabel("Metodo de registro");
+        categoriaLabel2 .setForeground(Color.WHITE);
+        categoriaLabel2.setFont(new Font("Roboto", Font.BOLD, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        mainPanel.add(categoriaLabel2, gbc);
 
         JLabel metodoRegistroLabel = new JLabel("Metodo de Registro:");
         metodoRegistroLabel.setForeground(Color.WHITE);
         metodoRegistroLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 10;
         mainPanel.add(metodoRegistroLabel, gbc);
 
         metodoRegistroComboBox = new JComboBox<>(new String[]{"Google", "Meta"});
-        metodoRegistroComboBox.setFont(new Font("Roboto", Font.PLAIN, 14));
+        metodoRegistroComboBox.setFont(new Font("Roboto", Font.PLAIN, 16));
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 10;
         mainPanel.add(metodoRegistroComboBox, gbc);
-
-        panelServicio = new JPanel(new BorderLayout());
-        panelServicio .setBackground(new Color(255, 255, 255)); // fondo oscuro
-
-        gbc.gridx = 0;
-        gbc.gridy = 8;
-        gbc.gridwidth = 2;
-        mainPanel.add(panelServicio, gbc);
 
         JButton registrarButton = new JButton("Finalizar registro");
         Utils.estilarButton(registrarButton);
         gbc.gridx = 0;
-        gbc.gridy = 9;
+        gbc.gridy = 12;
         gbc.gridwidth = 2;
         mainPanel.add(registrarButton, gbc);
-
-        JPanel panelServicioDerecha = new JPanel(new GridBagLayout());
-        panelServicioDerecha.setBackground(new Color(255, 255, 255)); // fondo oscuro
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        panelServicio.add(panelServicioDerecha, BorderLayout.CENTER);
 
         registrarButton.addActionListener(e -> registrarUsuario());
 
@@ -177,48 +197,16 @@ public class RegisterFrame extends JFrame {
         });
 
         gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridy = 13;
         gbc.gridwidth = 2;
         mainPanel.add(loginLinkLabel, gbc);
 
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        loginIconLabel = new JLabel();
-        loginIconLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panelServicio.add(loginIconLabel, BorderLayout.WEST);
-
-        // CORREO
-        JTextField correoField = new JTextField();
-        correoField.setFont(new Font("Roboto", Font.PLAIN, 16));
-        correoField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
+        panelServicio = new PanelServicioExterno();
         gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.weightx = 1;
-        //panelServicio.add(correoField, gbc);
-        panelServicioDerecha.add(correoField, gbc);
-
-        TextPrompt tpCorreo = new TextPrompt("Correo electrónico", correoField);
-        tpCorreo.changeAlpha(128);
-        tpCorreo.setHorizontalAlignment(JLabel.LEFT);
-
-        // CONTRASEÑA
-        JTextField contraField = new JPasswordField();
-        contraField.setFont(new Font("Roboto", Font.PLAIN, 16));
-        contraField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(7, 3, 5, 10)));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 11;
         gbc.gridwidth = 2;
-        gbc.weightx = 1;
-        panelServicioDerecha.add(contraField, gbc);
-
-        TextPrompt tpContra = new TextPrompt("Contraseña", contraField);
-        tpContra.changeAlpha(128);
-        tpContra.setHorizontalAlignment(JLabel.LEFT);
+        mainPanel.add(panelServicio, gbc);
 
         metodoRegistroComboBox.addActionListener(e -> {
             actualizarLogo();
@@ -232,18 +220,23 @@ public class RegisterFrame extends JFrame {
 
     private void actualizarLogo() {
         String nombreIcono = metodoRegistroComboBox.getSelectedItem().toString().toLowerCase().contains("google") ? "google" : "meta";
-        loginIconLabel.setIcon(Utils.crearLabelImagen(getClass().getResource("/" + nombreIcono + ".png"), 1.0f/15.0f).getIcon());
+        panelServicio.setIcono(nombreIcono);
     }
 
     private void registrarUsuario() {
         DatosRegistroDTO datosRegistroDto = new DatosRegistroDTO();
         datosRegistroDto.setNombre(nombreField.getText());
-        datosRegistroDto.setEmail(emailField.getText());
         datosRegistroDto.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
         datosRegistroDto.setPesoKg(Double.parseDouble(pesoKgField.getText()));
         datosRegistroDto.setAlturaCm(Double.parseDouble(alturaCmField.getText()));
         datosRegistroDto.setFrecuenciaCardiacaMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
         datosRegistroDto.setFrecuenciaCardiacaReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
+
+        datosRegistroDto.setEmail(panelServicio.getEmail());
+        datosRegistroDto.setContrasenya(panelServicio.getContrasenya());
+
+        System.out.println(datosRegistroDto.getEmail());
+        System.out.println(datosRegistroDto.getContrasenya());
 
         try {
             if (Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Google")) {
