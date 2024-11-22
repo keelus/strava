@@ -1,21 +1,17 @@
 package org.strava.cliente.gui;
 
-import org.strava.cliente.Controlador;
 import org.strava.cliente.gui.FormularioExterno.CallbackFormularioExterno;
-import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.DatosRegistro;
 import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistro;
 import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistroGoogle;
 import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistroMeta;
 import org.strava.cliente.gui.FormularioExterno.ResultadoFormularioExternoLogin;
 import org.strava.cliente.gui.FormularioExterno.SeleccionFormularioExternoLogin;
-import org.strava.server.Data.DTO.UsuarioNuevoDTO;
-import org.strava.server.Data.Enums.MetodoRegistro;
+import org.strava.server.Data.DTO.DatosRegistroDTO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -200,22 +196,22 @@ public class RegisterFrame extends JFrame implements CallbackFormularioExterno {
     }
 
     private void registrarUsuario() {
-        DatosRegistro datosRegistro = new DatosRegistro();
-        datosRegistro.setNombre(nombreField.getText());
-        datosRegistro.setEmail(emailField.getText());
-        datosRegistro.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
-        datosRegistro.setPesoKg(Float.parseFloat(pesoKgField.getText()));
-        datosRegistro.setAlturaCm(Float.parseFloat(alturaCmField.getText()));
-        datosRegistro.setFreqMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
-        datosRegistro.setFreqReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
+        DatosRegistroDTO datosRegistroDto = new DatosRegistroDTO();
+        datosRegistroDto.setNombre(nombreField.getText());
+        datosRegistroDto.setEmail(emailField.getText());
+        datosRegistroDto.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
+        datosRegistroDto.setPesoKg(Double.parseDouble(pesoKgField.getText()));
+        datosRegistroDto.setAlturaCm(Double.parseDouble(alturaCmField.getText()));
+        datosRegistroDto.setFrecuenciaCardiacaMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
+        datosRegistroDto.setFrecuenciaCardiacaReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
 
         if(Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Google")) {
             dispose();
-            this.formExterno = new FormularioExternoLoginParaRegistroGoogle(this, datosRegistro);
+            this.formExterno = new FormularioExternoLoginParaRegistroGoogle(this, datosRegistroDto);
             this.formExterno.setVisible(true);
         } else {
             dispose();
-            this.formExterno = new FormularioExternoLoginParaRegistroMeta(this, datosRegistro);
+            this.formExterno = new FormularioExternoLoginParaRegistroMeta(this, datosRegistroDto);
             this.formExterno.setVisible(true);
         }
         //try {

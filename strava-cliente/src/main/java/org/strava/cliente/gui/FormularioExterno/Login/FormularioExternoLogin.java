@@ -1,6 +1,8 @@
 package org.strava.cliente.gui.FormularioExterno.Login;
 
+import org.strava.cliente.Controlador;
 import org.strava.cliente.gui.FormularioExterno.CallbackFormularioExterno;
+import org.strava.cliente.gui.FormularioExterno.FormularioExternoServicio;
 import org.strava.cliente.gui.FormularioExterno.ResultadoFormularioExternoLogin;
 import org.strava.cliente.gui.TextPrompt;
 
@@ -8,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 
 public class FormularioExternoLogin extends JFrame {
     CallbackFormularioExterno callback;
@@ -18,7 +21,7 @@ public class FormularioExternoLogin extends JFrame {
     ImageIcon googleIcon;
 
     public FormularioExternoLogin(
-            CallbackFormularioExterno callback, FormularioExternoLoginAccionDeseada accionDeseada,
+            CallbackFormularioExterno callback, FormularioExternoServicio servicio,
             String ubicacionLogo, Color acento
     ) {
         this.callback = callback;
@@ -105,24 +108,17 @@ public class FormularioExternoLogin extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(volverButton, gbc);
 
-        loginButton.addActionListener(e -> {
+        loginButton.addActionListener(event -> {
             String email = correoField.getText();
             char[] contrasenya = contraField.getPassword();
 
-            // try {
-            switch(accionDeseada) {
-                case CON_GOOGLE:
-                    // Controlador.iniciarConGoogle(email, contrasenya) o algo similar, que pondra el TokenDTO en Controlador si todo OK
-                    break;
-                case CON_META:
-                    // Controlador.iniciarConMeta(email, contrasenya) o algo similar, que pondra el TokenDTO en Controlador si todo OK
-                    break;
+            try {
+                Controlador.getInstance().iniciarSesion(email, contrasenya, servicio);
+                callback.onFormularioFinalizado(ResultadoFormularioExternoLogin.OK);
+                dispose();
+            } catch (RemoteException e) {
+                JOptionPane.showMessageDialog(this, "Error al iniciar sesion: " + e.getMessage());
             }
-            callback.onFormularioFinalizado(ResultadoFormularioExternoLogin.OK);
-            dispose();
-            // } catch (Exception e) {
-            //     // Mostrar error aqui
-            // }
         });
 
         volverButton.addActionListener(e -> {

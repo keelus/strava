@@ -26,16 +26,35 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     }
     // AUTH
     @Override
-    public void authRegistrar(UsuarioNuevoDTO usuarioNuevoDto) throws RemoteException {
+    public void authRegistrarGoogle(DatosRegistroDTO datosRegistroDto) throws RemoteException {
         try {
-            servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
+            //servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+    @Override
+    public void authRegistrarMeta(DatosRegistroDTO datosRegistroDto) throws RemoteException {
+        try {
+            //servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public TokenDTO authLogin(LoginCredencialesDTO credencialesDto) throws RemoteException{
+    public TokenDTO authLoginGoogle(LoginCredencialesDTO credencialesDto) throws RemoteException {
+        Optional<TokenDO> token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto));
+
+        return TokenAssembler.doToDto(
+                token.orElseThrow(() -> new RemoteException(
+                        "Las credenciales son incorrectas o el usuario no existe."
+                ))
+        );
+    }
+
+    @Override
+    public TokenDTO authLoginMeta(LoginCredencialesDTO credencialesDto) throws RemoteException {
         Optional<TokenDO> token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto));
 
         return TokenAssembler.doToDto(

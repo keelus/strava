@@ -1,5 +1,6 @@
 package org.strava.cliente;
 
+import org.strava.cliente.gui.FormularioExterno.FormularioExternoServicio;
 import org.strava.server.Data.DTO.*;
 import org.strava.server.RemoteFachada.IRemoteFachada;
 
@@ -24,16 +25,22 @@ public class Controlador {
         return instance;
     }
 
-    public void iniciarSesion(String email, char[] contrasenya) throws RemoteException {
+    public void iniciarSesion(String email, char[] contrasenya, FormularioExternoServicio servicio) throws RemoteException {
         LoginCredencialesDTO credenciales = new LoginCredencialesDTO();
         credenciales.setEmail(email);
         credenciales.setContrasenya(new String(contrasenya));
 
-        this.tokenSesion = remoteFachada.authLogin(credenciales);
+        this.tokenSesion = servicio == FormularioExternoServicio.GOOGLE
+                ? remoteFachada.authLoginGoogle(credenciales)
+                : remoteFachada.authLoginMeta(credenciales);
     }
 
-    public void registrarUsuario(UsuarioNuevoDTO usuario) throws RemoteException {
-        remoteFachada.authRegistrar(usuario);
+
+    public void registrarUsuario(DatosRegistroDTO datosRegistroDto, FormularioExternoServicio servicio) throws RemoteException {
+        if(servicio == FormularioExternoServicio.GOOGLE)
+            remoteFachada.authRegistrarGoogle(datosRegistroDto);
+        else
+            remoteFachada.authRegistrarMeta(datosRegistroDto);
     }
 
     public void crearReto(RetoNuevoDTO reto) throws RemoteException {

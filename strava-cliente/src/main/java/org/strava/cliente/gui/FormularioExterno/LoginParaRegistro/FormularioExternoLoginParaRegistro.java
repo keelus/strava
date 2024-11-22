@@ -1,16 +1,20 @@
 package org.strava.cliente.gui.FormularioExterno.LoginParaRegistro;
 
+import org.strava.cliente.Controlador;
 import org.strava.cliente.gui.FormularioExterno.CallbackFormularioExterno;
+import org.strava.cliente.gui.FormularioExterno.FormularioExternoServicio;
 import org.strava.cliente.gui.FormularioExterno.ResultadoFormularioExternoLogin;
 import org.strava.cliente.gui.TextPrompt;
+import org.strava.server.Data.DTO.DatosRegistroDTO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 
 public class FormularioExternoLoginParaRegistro extends JFrame {
-    DatosRegistro datosRegistro;
+    DatosRegistroDTO datosRegistroDto;
     CallbackFormularioExterno callback;
 
     JTextField correoField;
@@ -20,12 +24,12 @@ public class FormularioExternoLoginParaRegistro extends JFrame {
     ImageIcon googleIcon;
 
     public FormularioExternoLoginParaRegistro(
-            CallbackFormularioExterno callback, FormularioExternoLoginParaRegistroAccionDeseada accionDeseada,
-            DatosRegistro datosRegistro,
+            CallbackFormularioExterno callback, FormularioExternoServicio servicio,
+            DatosRegistroDTO datosRegistroDto,
             String ubicacionLogo, String valorInicialCorreo, Color acento
     ) {
         this.callback = callback;
-        this.datosRegistro = datosRegistro;
+        this.datosRegistroDto = datosRegistroDto;
 
         setTitle("Iniciar sesion");
         setSize(700, 500);
@@ -112,25 +116,17 @@ public class FormularioExternoLoginParaRegistro extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(volverButton, gbc);
 
-        loginButton.addActionListener(e -> {
+        loginButton.addActionListener(event -> {
             String email = correoField.getText();
             char[] contrasenya = contraField.getPassword();
 
-            // try {
-            switch(accionDeseada) {
-                case CON_GOOGLE:
-                    // Controlador.registrarseConGoogle(email, contrasenya, datosRegistro) o algo similar. El servidor comprobara
-                    // y si el email no esta registrado, y google es OK, registrara los datos una vez verificados
-                    break;
-                case CON_META:
-                    // Controlador.iniciarConMeta(email, contrasenya, datosRegistro) o algo similar
-                    break;
+            try {
+                Controlador.getInstance().registrarUsuario(datosRegistroDto, servicio);
+                callback.onFormularioFinalizado(ResultadoFormularioExternoLogin.OK);
+                dispose();
+            } catch (RemoteException e) {
+                JOptionPane.showMessageDialog(this, "Error al registrarse: " + e.getMessage());
             }
-            callback.onFormularioFinalizado(ResultadoFormularioExternoLogin.OK);
-            dispose();
-            // } catch (Exception e) {
-            //     // Mostrar error aqui
-            // }
         });
 
         volverButton.addActionListener(e -> {

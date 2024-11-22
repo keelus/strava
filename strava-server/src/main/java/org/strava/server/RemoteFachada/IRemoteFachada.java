@@ -8,8 +8,15 @@ import java.util.Date;
 import java.util.List;
 
 public interface IRemoteFachada extends Remote {
-    void authRegistrar(UsuarioNuevoDTO usuarioNuevoDto) throws RemoteException;
-    TokenDTO authLogin(LoginCredencialesDTO credencialesDto) throws RemoteException;
+    // Realizan el login, y si va OK, devuelven el token
+    TokenDTO authLoginGoogle(LoginCredencialesDTO credencialesDto) throws RemoteException;
+    TokenDTO authLoginMeta(LoginCredencialesDTO credencialesDto) throws RemoteException;
+
+    // Realizan el registro, no sin antes verificar las credenciales con Google o Meta.
+    // Tambien, verifican que el email no exista y que los datos sean validos. Si son correctos, devuelve OK.
+    void authRegistrarGoogle(DatosRegistroDTO datosRegistroDto) throws RemoteException;
+    void authRegistrarMeta(DatosRegistroDTO datosRegistroDto) throws RemoteException;
+
     void authLogout(TokenDTO tokenDto) throws RemoteException;
 
     void retoCrear(TokenDTO tokenDto, RetoNuevoDTO retoNuevoDto) throws RemoteException;
