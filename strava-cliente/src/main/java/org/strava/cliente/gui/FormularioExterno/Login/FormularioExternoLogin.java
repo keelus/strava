@@ -96,12 +96,12 @@ public class FormularioExternoLogin extends JFrame {
         mainPanel.add(loginButton, gbc);
 
         // BOTON VOLVER TEMPORAL
-        JButton volverButton = new JButton("-- VOLVER --");
+        JButton volverButton = new JButton("Volver");
         volverButton.setFont(new Font("Roboto", Font.BOLD, 16));
-        volverButton.setBackground(acento);
+        volverButton.setBackground(new Color(160, 160, 160));
         volverButton.setForeground(Color.WHITE);
         volverButton.setFocusPainted(false);
-        volverButton.setBorder(BorderFactory.createEmptyBorder(12, 10, 8, 10));
+        volverButton.setBorder(BorderFactory.createEmptyBorder(6, 10, 2, 10));
         volverButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -127,7 +127,7 @@ public class FormularioExternoLogin extends JFrame {
         });
 
         // OPCION REGISTRARSE
-        JLabel loginLinkLabel = new JLabel("<html><u>¿No tienes una cuenta? Registrate</u></html>");
+        JLabel loginLinkLabel = new JLabel("<html><u>¿No tienes una cuenta de " + servicio.name() + "? Registrate</u></html>");
         loginLinkLabel.setForeground(acento);
         loginLinkLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         loginLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));

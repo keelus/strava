@@ -24,6 +24,7 @@ public class RegisterFrame extends JFrame {
     private JSpinner fechaNacimientoSpinner;
 
     private JPanel panelServicio;
+    private JLabel loginIconLabel;
 
     public RegisterFrame() {
         setTitle("Registrarse");
@@ -176,19 +177,8 @@ public class RegisterFrame extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // LOGO GOOGLE
-        ImageIcon tempGoogleImageIcon = new ImageIcon(getClass().getResource("/google.png"));
-        int w = tempGoogleImageIcon.getIconWidth();
-        int h = tempGoogleImageIcon.getIconHeight();
-        int s = 15;
-        Image tempGoogleIcon = tempGoogleImageIcon.getImage();
-        ImageIcon googleIcon = new ImageIcon(tempGoogleIcon.getScaledInstance(w/s, h/s,  java.awt.Image.SCALE_SMOOTH));
-        JLabel googleIconLabel = new JLabel(googleIcon);
-        googleIconLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        //gbc.gridx = 0;
-        //gbc.gridy = 0;
-        //gbc.gridwidth = 2;
-        panelServicio.add(googleIconLabel, BorderLayout.WEST);
+        loginIconLabel = new JLabel();
+        panelServicio.add(loginIconLabel, BorderLayout.WEST);
 
         // CORREO
         JTextField correoField = new JTextField();
@@ -221,9 +211,28 @@ public class RegisterFrame extends JFrame {
         tpContra.changeAlpha(128);
         tpContra.setHorizontalAlignment(JLabel.LEFT);
 
+        metodoRegistroComboBox.addActionListener(e -> {
+            actualizarLogo();
+        });
+        actualizarLogo();
+
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private void actualizarLogo() {
+        String nombreIcono = metodoRegistroComboBox.getSelectedItem().toString().toLowerCase().contains("google") ? "google" : "meta";
+        ImageIcon imageIconTemporal = new ImageIcon(getClass().getResource("/" + nombreIcono + ".png"));
+
+        int w = imageIconTemporal.getIconWidth();
+        int h = imageIconTemporal.getIconHeight();
+        float factorEscala = 1.0f/15.0f;
+
+        ImageIcon googleIcon = new ImageIcon(imageIconTemporal.getImage().getScaledInstance((int)(w*factorEscala), (int)(h*factorEscala),  java.awt.Image.SCALE_SMOOTH));
+
+        loginIconLabel.setIcon(googleIcon);
+        loginIconLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
     // hacer botones agradables a la vista
@@ -248,9 +257,9 @@ public class RegisterFrame extends JFrame {
 
         try {
             if (Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Google")) {
-                Controlador.getInstance().registrarUsuario(datosRegistroDto, FormularioExternoServicio.GOOGLE);
+                Controlador.getInstance().registrarUsuario(datosRegistroDto, FormularioExternoServicio.Google);
             } else {
-                Controlador.getInstance().registrarUsuario(datosRegistroDto, FormularioExternoServicio.META);
+                Controlador.getInstance().registrarUsuario(datosRegistroDto, FormularioExternoServicio.Meta);
             }
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getCause());

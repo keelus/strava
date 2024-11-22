@@ -30,14 +30,14 @@ public class Controlador {
         credenciales.setEmail(email);
         credenciales.setContrasenya(new String(contrasenya));
 
-        this.tokenSesion = servicio == FormularioExternoServicio.GOOGLE
+        this.tokenSesion = servicio == FormularioExternoServicio.Google
                 ? remoteFachada.authLoginGoogle(credenciales)
                 : remoteFachada.authLoginMeta(credenciales);
     }
 
 
     public void registrarUsuario(DatosRegistroDTO datosRegistroDto, FormularioExternoServicio servicio) throws RemoteException {
-        if(servicio == FormularioExternoServicio.GOOGLE)
+        if(servicio == FormularioExternoServicio.Google)
             remoteFachada.authRegistrarGoogle(datosRegistroDto);
         else
             remoteFachada.authRegistrarMeta(datosRegistroDto);

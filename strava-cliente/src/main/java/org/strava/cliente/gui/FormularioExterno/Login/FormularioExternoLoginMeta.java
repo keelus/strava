@@ -8,7 +8,7 @@ import java.awt.*;
 public class FormularioExternoLoginMeta extends FormularioExternoLogin {
     public FormularioExternoLoginMeta(CallbackFormularioExterno callback) {
         super(
-                callback, FormularioExternoServicio.META,
+                callback, FormularioExternoServicio.Meta,
                 "/meta.png", new Color(0, 128, 250));
     }
 }

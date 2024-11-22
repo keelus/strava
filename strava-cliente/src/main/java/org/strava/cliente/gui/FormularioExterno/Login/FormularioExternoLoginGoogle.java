@@ -8,7 +8,7 @@ import java.awt.*;
 public class FormularioExternoLoginGoogle extends FormularioExternoLogin {
     public FormularioExternoLoginGoogle(CallbackFormularioExterno callback) {
         super(
-                callback, FormularioExternoServicio.GOOGLE,
+                callback, FormularioExternoServicio.Google,
                 "/google.png", new Color(11, 87, 208));
     }
 }
