@@ -20,19 +20,25 @@ public class AutenticacionFrame extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // boton crear reto
-        JButton loginButton = new JButton("Login");
-        estilarButton(loginButton);
+        JLabel iconoLabel = Utils.crearLabelImagen(getClass().getResource("/strava.png"), 1.0f/15.0f);
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        menuPanel.add(iconoLabel, gbc);
+
+        // boton crear reto
+        JButton loginButton = new JButton("Login");
+        Utils.estilarButton(loginButton);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
         menuPanel.add(loginButton, gbc);
 
         // boton listar retos
         JButton registroButton = new JButton("Registro");
-        estilarButton(registroButton);
+        Utils.estilarButton(registroButton);
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         menuPanel.add(registroButton, gbc);
 
@@ -49,15 +55,5 @@ public class AutenticacionFrame extends JFrame {
 
         add(menuPanel);
         setVisible(true);
-    }
-
-    // hacer botones agradables a la vista
-    private void estilarButton(JButton button) {
-        button.setFont(new Font("Roboto", Font.BOLD, 16));
-        button.setBackground(new Color(0, 184, 148));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

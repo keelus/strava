@@ -8,6 +8,7 @@ import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLogin;
 import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLoginGoogle;
 import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLoginMeta;
 import org.strava.cliente.gui.MainFrame;
+import org.strava.cliente.gui.Utils;
 
 
 public class SeleccionFormularioExternoLogin extends JFrame implements CallbackFormularioExterno {
@@ -25,26 +26,32 @@ public class SeleccionFormularioExternoLogin extends JFrame implements CallbackF
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // boton crear reto
-        JButton googleButton = new JButton("Google");
-        estilarButton(googleButton);
+        JLabel iconoLabel = Utils.crearLabelImagen(getClass().getResource("/strava.png"), 1.0f/15.0f);
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        menuPanel.add(iconoLabel, gbc);
+
+        // boton crear reto
+        JButton googleButton = new JButton("Google");
+        Utils.estilarButton(googleButton);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
         menuPanel.add(googleButton, gbc);
 
         // boton listar retos
         JButton metaButton = new JButton("Meta");
-        estilarButton(metaButton);
+        Utils.estilarButton(metaButton);
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         menuPanel.add(metaButton, gbc);
 
         JButton volverButton = new JButton("-- Volver --");
-        estilarButton(volverButton);
+        Utils.estilarButton(volverButton);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         menuPanel.add(volverButton, gbc);
 
@@ -67,16 +74,6 @@ public class SeleccionFormularioExternoLogin extends JFrame implements CallbackF
 
         add(menuPanel);
         setVisible(true);
-    }
-
-    // hacer botones agradables a la vista
-    private void estilarButton(JButton button) {
-        button.setFont(new Font("Roboto", Font.BOLD, 16));
-        button.setBackground(new Color(0, 184, 148));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     @Override

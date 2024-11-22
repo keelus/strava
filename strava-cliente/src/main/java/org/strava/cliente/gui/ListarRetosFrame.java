@@ -49,7 +49,7 @@ public class ListarRetosFrame extends JFrame {
 
         // boton de actualizar
         JButton actualizarButton = new JButton("Actualizar");
-        estilarButton(actualizarButton);
+        Utils.estilarButton(actualizarButton);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0;
@@ -62,16 +62,6 @@ public class ListarRetosFrame extends JFrame {
         add(mainPanel);
         listarRetos(textArea);
         setVisible(true);
-    }
-
-    // hacer botones agradables a la vista
-    private void estilarButton(JButton button) {
-        button.setFont(new Font("Roboto", Font.BOLD, 16));
-        button.setBackground(new Color(0, 184, 148));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private void listarRetos(JTextArea textArea) {

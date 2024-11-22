@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
 
         // boton crear reto
         JButton crearRetoButton = new JButton("Crear Reto");
-        estilarButton(crearRetoButton);
+        Utils.estilarButton(crearRetoButton);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
 
         // boton listar retos
         JButton listarButton = new JButton("Listar Retos");
-        estilarButton(listarButton);
+        Utils.estilarButton(listarButton);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 
         // boton cerrar sesión
         JButton cerrarButton = new JButton("Cerrar Sesión");
-        estilarButton(cerrarButton);
+        Utils.estilarButton(cerrarButton);
         cerrarButton.setBackground(new Color(231, 76, 60));
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -63,15 +63,5 @@ public class MainFrame extends JFrame {
 
         add(menuPanel);
         setVisible(true);
-    }
-
-    // hacer botones agradables a la vista
-    private void estilarButton(JButton button) {
-        button.setFont(new Font("Roboto", Font.BOLD, 16));
-        button.setBackground(new Color(0, 184, 148));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

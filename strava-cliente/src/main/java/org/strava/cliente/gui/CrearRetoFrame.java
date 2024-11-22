@@ -172,7 +172,7 @@ public class CrearRetoFrame extends JFrame {
 
         // boton crear label
         JButton crearButton = new JButton("Crear");
-        estilarButton(crearButton);
+        Utils.estilarButton(crearButton);
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 2;
@@ -193,16 +193,6 @@ public class CrearRetoFrame extends JFrame {
 
         add(mainPanel);
         setVisible(true);
-    }
-
-    // hacer botones agradables a la vista
-    private void estilarButton(JButton button) {
-        button.setFont(new Font("Roboto", Font.BOLD, 16));
-        button.setBackground(new Color(0, 184, 148));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private void crearReto() {
