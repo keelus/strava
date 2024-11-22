@@ -57,6 +57,8 @@ public class FormularioExternoLoginParaRegistro extends JFrame {
 
         // CORREO
         correoField = new JTextField(valorInicialCorreo);
+        correoField .setBackground(new Color(245, 245, 245));
+        correoField.setDisabledTextColor(new Color(206, 206, 206));
         correoField.setEnabled(false);
         correoField.setFont(new Font("Roboto", Font.PLAIN, 16));
         correoField.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
@@ -97,6 +99,19 @@ public class FormularioExternoLoginParaRegistro extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(loginButton, gbc);
 
+        // BOTON VOLVER TEMPORAL
+        JButton volverButton = new JButton("-- VOLVER --");
+        volverButton.setFont(new Font("Roboto", Font.BOLD, 16));
+        volverButton.setBackground(acento);
+        volverButton.setForeground(Color.WHITE);
+        volverButton.setFocusPainted(false);
+        volverButton.setBorder(BorderFactory.createEmptyBorder(12, 10, 8, 10));
+        volverButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        mainPanel.add(volverButton, gbc);
+
         loginButton.addActionListener(e -> {
             String email = correoField.getText();
             char[] contrasenya = contraField.getPassword();
@@ -116,6 +131,11 @@ public class FormularioExternoLoginParaRegistro extends JFrame {
             // } catch (Exception e) {
             //     // Mostrar error aqui
             // }
+        });
+
+        volverButton.addActionListener(e -> {
+            callback.onFormularioFinalizado(ResultadoFormularioExternoLogin.VOLVER);
+            dispose();
         });
 
         // OPCION REGISTRARSE

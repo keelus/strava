@@ -1,6 +1,12 @@
 package org.strava.cliente.gui;
 
 import org.strava.cliente.Controlador;
+import org.strava.cliente.gui.FormularioExterno.CallbackFormularioExterno;
+import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.DatosRegistro;
+import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistro;
+import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistroGoogle;
+import org.strava.cliente.gui.FormularioExterno.LoginParaRegistro.FormularioExternoLoginParaRegistroMeta;
+import org.strava.cliente.gui.FormularioExterno.ResultadoFormularioExternoLogin;
 import org.strava.cliente.gui.FormularioExterno.SeleccionFormularioExternoLogin;
 import org.strava.server.Data.DTO.UsuarioNuevoDTO;
 import org.strava.server.Data.Enums.MetodoRegistro;
@@ -13,7 +19,8 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.Objects;
 
-public class RegisterFrame extends JFrame {
+public class RegisterFrame extends JFrame implements CallbackFormularioExterno {
+    private FormularioExternoLoginParaRegistro formExterno;
 
     private JTextField emailField;
     private JTextField nombreField;
@@ -39,39 +46,24 @@ public class RegisterFrame extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setForeground(Color.WHITE);
-        emailLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        mainPanel.add(emailLabel, gbc);
-
-        emailField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        mainPanel.add(emailField, gbc);
-
         JLabel nombreLabel = new JLabel("Nombre:");
         nombreLabel.setForeground(Color.WHITE);
         nombreLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 0;
         gbc.weightx = 0;
         mainPanel.add(nombreLabel, gbc);
 
         nombreField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 0;
         mainPanel.add(nombreField, gbc);
 
         JLabel fechaNacimientoLabel = new JLabel("Fecha de Nacimiento:");
         fechaNacimientoLabel.setForeground(Color.WHITE);
         fechaNacimientoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         mainPanel.add(fechaNacimientoLabel, gbc);
 
         SpinnerDateModel dateModel = new SpinnerDateModel();
@@ -80,56 +72,61 @@ public class RegisterFrame extends JFrame {
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(fechaNacimientoSpinner, "yyyy-MM-dd");
         fechaNacimientoSpinner.setEditor(dateEditor);
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         mainPanel.add(fechaNacimientoSpinner, gbc);
 
         JLabel pesoLabel = new JLabel("Peso (Kg):");
         pesoLabel.setForeground(Color.WHITE);
         pesoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         mainPanel.add(pesoLabel, gbc);
 
         pesoKgField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         mainPanel.add(pesoKgField, gbc);
 
         JLabel alturaLabel = new JLabel("Altura (cm):");
         alturaLabel.setForeground(Color.WHITE);
         alturaLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         mainPanel.add(alturaLabel, gbc);
 
         alturaCmField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         mainPanel.add(alturaCmField, gbc);
 
         JLabel fcMaxLabel = new JLabel("Frecuencia Cardiaca Maxima:");
         fcMaxLabel.setForeground(Color.WHITE);
         fcMaxLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         mainPanel.add(fcMaxLabel, gbc);
 
         frecuenciaCardiacaMaxField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         mainPanel.add(frecuenciaCardiacaMaxField, gbc);
 
         JLabel fcReposoLabel = new JLabel("Frecuencia Cardiaca en Reposo:");
         fcReposoLabel.setForeground(Color.WHITE);
         fcReposoLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 5;
         mainPanel.add(fcReposoLabel, gbc);
 
         frecuenciaCardiacaReposoField = new JTextField(20);
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 5;
         mainPanel.add(frecuenciaCardiacaReposoField, gbc);
+
+        JLabel separadorLabel = new JLabel("---");
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        mainPanel.add(separadorLabel, gbc);
 
         JLabel metodoRegistroLabel = new JLabel("Metodo de Registro:");
         metodoRegistroLabel.setForeground(Color.WHITE);
@@ -138,16 +135,32 @@ public class RegisterFrame extends JFrame {
         gbc.gridy = 7;
         mainPanel.add(metodoRegistroLabel, gbc);
 
-        metodoRegistroComboBox = new JComboBox<>(new String[]{"Escoger", "Meta", "Google"});
+        metodoRegistroComboBox = new JComboBox<>(new String[]{"Google", "Meta"});
         metodoRegistroComboBox.setFont(new Font("Roboto", Font.PLAIN, 14));
         gbc.gridx = 1;
         gbc.gridy = 7;
         mainPanel.add(metodoRegistroComboBox, gbc);
 
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setForeground(Color.WHITE);
+        emailLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.weightx = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        mainPanel.add(emailLabel, gbc);
+
+        emailField = new JTextField(20);
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        gbc.weightx = 1;
+        mainPanel.add(emailField, gbc);
+
+
         JButton registrarButton = new JButton("Registrarse");
         estilarButton(registrarButton);
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(registrarButton, gbc);
@@ -162,12 +175,12 @@ public class RegisterFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 new SeleccionFormularioExternoLogin();
-                dispose();
+                setVisible(false);
             }
         });
 
         gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridy = 11;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(loginLinkLabel, gbc);
@@ -187,9 +200,27 @@ public class RegisterFrame extends JFrame {
     }
 
     private void registrarUsuario() {
-//        try {
-            System.out.println("Aqui ahora habria que mostrar la ventana de Login(ParaRegistro) de Meta o Google, con el email ya seteado y deshabilitado, para luego al final mandar todo al servidor.");
-            return;
+        DatosRegistro datosRegistro = new DatosRegistro();
+        datosRegistro.setNombre(nombreField.getText());
+        datosRegistro.setEmail(emailField.getText());
+        datosRegistro.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
+        datosRegistro.setPesoKg(Float.parseFloat(pesoKgField.getText()));
+        datosRegistro.setAlturaCm(Float.parseFloat(alturaCmField.getText()));
+        datosRegistro.setFreqMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
+        datosRegistro.setFreqReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
+
+        if(Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Google")) {
+            dispose();
+            this.formExterno = new FormularioExternoLoginParaRegistroGoogle(this, datosRegistro);
+            this.formExterno.setVisible(true);
+        } else {
+            dispose();
+            this.formExterno = new FormularioExternoLoginParaRegistroMeta(this, datosRegistro);
+            this.formExterno.setVisible(true);
+        }
+        //try {
+        //    System.out.println("Aqui ahora habria que mostrar la ventana de Login(ParaRegistro) de Meta o Google, con el email ya seteado y deshabilitado, para luego al final mandar todo al servidor.");
+        //    return;
 
 //            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO();
 //            usuario.setEmail(emailField.getText());
@@ -212,5 +243,21 @@ public class RegisterFrame extends JFrame {
 //        } catch (RemoteException | RuntimeException e) {
 //            JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getCause());
 //        }
+    }
+
+    @Override
+    public void onFormularioFinalizado(ResultadoFormularioExternoLogin resultado) {
+        switch(resultado) {
+            case OK:
+                // Mostrar OK
+                this.formExterno.dispose();
+                new AutenticacionFrame();
+                dispose();
+                break;
+            case VOLVER:
+                this.formExterno.dispose();
+                setVisible(true);
+                break;
+        }
     }
 }
