@@ -3,6 +3,7 @@ package org.strava.cliente;
 import javax.swing.*;
 
 import org.strava.cliente.gui.LoginFrame;
+import org.strava.cliente.gui.LoginGoogleFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,7 +21,7 @@ public class Main {
         Localizador.bindearServer(puertoServicio, nombreServicio);
 
         try {
-            SwingUtilities.invokeLater(LoginFrame::new);
+            SwingUtilities.invokeLater(LoginGoogleFrame::new);
         } catch (Exception e) {
             e.printStackTrace();
         }
