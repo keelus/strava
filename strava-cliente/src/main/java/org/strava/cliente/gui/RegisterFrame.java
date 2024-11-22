@@ -1,6 +1,7 @@
 package org.strava.cliente.gui;
 
 import org.strava.cliente.Controlador;
+import org.strava.cliente.gui.FormularioExterno.SeleccionFormularioExternoLogin;
 import org.strava.server.Data.DTO.UsuarioNuevoDTO;
 import org.strava.server.Data.Enums.MetodoRegistro;
 
@@ -160,7 +161,7 @@ public class RegisterFrame extends JFrame {
         loginLinkLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new LoginFrame();
+                new SeleccionFormularioExternoLogin();
                 dispose();
             }
         });
@@ -186,27 +187,30 @@ public class RegisterFrame extends JFrame {
     }
 
     private void registrarUsuario() {
-        try {
-            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO();
-            usuario.setEmail(emailField.getText());
-            if(Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Meta")) {
-                usuario.setMetodoRegistro(MetodoRegistro.Meta);
-            } else {
-                usuario.setMetodoRegistro(MetodoRegistro.Google);
-            }
-            usuario.setNombre(nombreField.getText());
-            usuario.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
-            usuario.setPesoKg(Double.parseDouble(pesoKgField.getText()));
-            usuario.setAlturaCm(Double.parseDouble(alturaCmField.getText()));
-            usuario.setFrecuenciaCardiacaMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
-            usuario.setFrecuenciaCardiacaReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
+//        try {
+            System.out.println("Aqui ahora habria que mostrar la ventana de Login(ParaRegistro) de Meta o Google, con el email ya seteado y deshabilitado, para luego al final mandar todo al servidor.");
+            return;
 
-            Controlador.getInstance().registrarUsuario(usuario);
-            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
-            new LoginFrame();
-            dispose();
-        } catch (RemoteException | RuntimeException e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getCause());
-        }
+//            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO();
+//            usuario.setEmail(emailField.getText());
+//            if(Objects.equals(metodoRegistroComboBox.getSelectedItem(), "Meta")) {
+//                usuario.setMetodoRegistro(MetodoRegistro.Meta);
+//            } else {
+//                usuario.setMetodoRegistro(MetodoRegistro.Google);
+//            }
+//            usuario.setNombre(nombreField.getText());
+//            usuario.setFechaNacimiento((Date) fechaNacimientoSpinner.getValue());
+//            usuario.setPesoKg(Double.parseDouble(pesoKgField.getText()));
+//            usuario.setAlturaCm(Double.parseDouble(alturaCmField.getText()));
+//            usuario.setFrecuenciaCardiacaMax(Integer.parseInt(frecuenciaCardiacaMaxField.getText()));
+//            usuario.setFrecuenciaCardiacaReposo(Integer.parseInt(frecuenciaCardiacaReposoField.getText()));
+//
+//            Controlador.getInstance().registrarUsuario(usuario);
+//            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
+//            new SeleccionFormularioExternoLogin();
+//            dispose();
+//        } catch (RemoteException | RuntimeException e) {
+//            JOptionPane.showMessageDialog(this, "Error al registrar usuario: " + e.getCause());
+//        }
     }
 }

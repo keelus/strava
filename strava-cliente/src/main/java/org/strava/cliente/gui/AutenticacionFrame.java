@@ -1,16 +1,12 @@
 package org.strava.cliente.gui;
 
-import org.strava.server.Data.DTO.TokenDTO;
+import org.strava.cliente.gui.FormularioExterno.*;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
-    private TokenDTO tokenSesion;
-
-    public MainFrame() {
-        this.tokenSesion = tokenSesion;
-
+public class AutenticacionFrame extends JFrame {
+    public AutenticacionFrame() {
         setTitle("Menú Principal");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,41 +21,31 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // boton crear reto
-        JButton crearRetoButton = new JButton("Crear Reto");
-        estilarButton(crearRetoButton);
+        JButton loginButton = new JButton("Login");
+        estilarButton(loginButton);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        menuPanel.add(crearRetoButton, gbc);
+        menuPanel.add(loginButton, gbc);
 
         // boton listar retos
-        JButton listarButton = new JButton("Listar Retos");
-        estilarButton(listarButton);
+        JButton registroButton = new JButton("Registro");
+        estilarButton(registroButton);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
-        menuPanel.add(listarButton, gbc);
+        menuPanel.add(registroButton, gbc);
 
-        // boton cerrar sesión
-        JButton cerrarButton = new JButton("Cerrar Sesión");
-        estilarButton(cerrarButton);
-        cerrarButton.setBackground(new Color(231, 76, 60));
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        menuPanel.add(cerrarButton, gbc);
-
-        crearRetoButton.addActionListener(e -> {
-            new CrearRetoFrame(this.tokenSesion);
-        });
-        listarButton.addActionListener(e -> {
-            new ListarRetosFrame(this.tokenSesion);
-        });
-        cerrarButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(MainFrame.this, "Sesión cerrada");
-            new AutenticacionFrame().setVisible(true);
+        loginButton.addActionListener(e -> {
+            SeleccionFormularioExternoLogin seleccionFormulario = new SeleccionFormularioExternoLogin();
+            seleccionFormulario.setVisible(true);
             dispose();
         });
+        registroButton.addActionListener(e -> {
+            new RegisterFrame().setVisible(true);
+            dispose();
+        });
+
 
         add(menuPanel);
         setVisible(true);
