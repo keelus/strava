@@ -5,12 +5,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @SpringBootApplication
 public class ServerApplication implements CommandLineRunner {
@@ -27,7 +27,6 @@ public class ServerApplication implements CommandLineRunner {
 		Usuario user1 = new Usuario("user1@gmail.com", "password1");
 		usuarioRepositorio.save(user1);
 	}
-
 }
 
 @RestController
@@ -36,28 +35,22 @@ class HolaController {
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
 
-	@RequestMapping("/")
-	public String ping() {
-		return "Pong";
+	@GetMapping("/")
+	public UsuarioHttp ping() {
+		UsuarioHttp usuario = new UsuarioHttp(usuarioRepositorio.getById(1).get());
+		return usuario;
 	}
 
-	@RequestMapping("/crear")
-	public String crear() {
-		Usuario nuevoUsuario = new Usuario();
-		nuevoUsuario.setEmail("adios@gmail.com");
-		nuevoUsuario.setContrasenya("1234");
-		// How to access interface UsuarioRepositorio
-		usuarioRepositorio.save(nuevoUsuario);
-		return "Usuario creado?";
-	}
+	@PostMapping("/user/login")
+	public ResponseEntity<?> login(@RequestBody UsuarioHttp credenciales) {
+		Optional<Usuario> usuarioObtenido = usuarioRepositorio.getByEmail(credenciales.getEmail());
 
-	@RequestMapping("/listar")
-	public String listar() {
-		String cuerpo = "<ul>";
-		for (Usuario usuario : usuarioRepositorio.findAll()) {
-			cuerpo += "<li>" + usuario.toString() + "</li>";
+		if(usuarioObtenido.isPresent()) {
+			if(Crypto.EsHashIdentico(usuarioObtenido.get().getContrasenya(), credenciales.getContrasenya())) {
+				return ResponseEntity.status(200).body("Ok");
+			}
 		}
-		cuerpo += "<ul>";
-		return cuerpo;
+
+		return ResponseEntity.status(400).body("Credenciales incorrectas.");
 	}
 }
