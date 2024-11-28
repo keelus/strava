@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.transaction.Transactional;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
@@ -44,9 +45,19 @@ public class Usuario {
     public String getContrasenya() {
         return contrasenya;
     }
+
+    public String toString() {
+        return "{" + id + ";" + email + ";" + contrasenya + "}";
+    }
 }
 
 interface UsuarioRepositorio extends Repository<Usuario, Long> {
-    Usuario guardar(Usuario usuario);
-    Optional<Usuario> buscarPorId(long id);
+    Usuario save(Usuario usuario);
+    Optional<Usuario> getById(long id);
+    Iterable<Usuario> findAll();
+
+    @Transactional
+    default Usuario updateOrInsert(Usuario usuario) {
+        return save(usuario);
+    }
 }
