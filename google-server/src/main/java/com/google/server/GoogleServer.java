@@ -4,22 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @SpringBootApplication
-public class ServerApplication implements CommandLineRunner {
+public class GoogleServer implements CommandLineRunner {
 
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServerApplication.class, args);
+		SpringApplication.run(GoogleServer.class, args);
 	}
 
 	@Override
@@ -30,16 +27,10 @@ public class ServerApplication implements CommandLineRunner {
 }
 
 @RestController
-class HolaController {
+class GoogleController {
 
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
-
-	@GetMapping("/")
-	public UsuarioHttp ping() {
-		UsuarioHttp usuario = new UsuarioHttp(usuarioRepositorio.getById(1).get());
-		return usuario;
-	}
 
 	@PostMapping("/user/login")
 	public ResponseEntity<?> login(@RequestBody UsuarioHttp credenciales) {
@@ -51,6 +42,6 @@ class HolaController {
 			}
 		}
 
-		return ResponseEntity.status(400).body("Credenciales incorrectas.");
+		return ResponseEntity.status(401).body("Las credenciales introducidas no son correctas, o el email no existe.");
 	}
 }

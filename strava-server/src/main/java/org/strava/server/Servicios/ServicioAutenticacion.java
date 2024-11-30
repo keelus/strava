@@ -1,9 +1,8 @@
 package org.strava.server.Servicios;
 
-import org.strava.server.Data.Dominio.LoginCredencialesDO;
-import org.strava.server.Data.Dominio.TokenDO;
-import org.strava.server.Data.Dominio.UsuarioDO;
-import org.strava.server.Data.Dominio.UsuarioNuevoDO;
+import org.strava.server.AutenticacionGateway.AutenticacionGateway;
+import org.strava.server.Data.Dominio.*;
+import org.strava.server.Data.Enums.MetodoRegistro;
 
 import java.util.*;
 
@@ -30,39 +29,71 @@ public class ServicioAutenticacion {
         throw new Exception("No se han encontrado usuarios con esa ID.");
     }
 
-    public void registrarUsuario(UsuarioNuevoDO nuevoUsuarioDo) throws  Exception {
+    public void registrarUsuario(DatosRegistroDO datosRegistroDO) throws  Exception {
+        // Verificar en Meta/Google
+        LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
+        credencialesDo.setEmail(datosRegistroDO.getEmail());
+        credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
+        AutenticacionGateway.getInstance().loginServicioExterno(credencialesDo, datosRegistroDO.getMetodoRegistro());
+
+        // Una vez se verifican las credenciales del servicio externo, comprobar que no exista un usuario
+        // con el correo.
         for(UsuarioDO usuarioDo: usuarios) {
-            if(usuarioDo.getEmail().equalsIgnoreCase(nuevoUsuarioDo.getEmail())) {
+            if(usuarioDo.getEmail().equalsIgnoreCase(datosRegistroDO.getEmail())) {
                 throw new Exception("Ya existe un usuario con ese correo");
             }
         }
 
-        usuarios.add(new UsuarioDO(nuevoUsuarioDo, Long.valueOf(usuarios.size())));
+        // Si el email no esta en uso, se crea el usuario Do apartir de los datos de registro, y se guarda.
+        UsuarioNuevoDO usuarioNuevoDo = new UsuarioNuevoDO();
+        usuarioNuevoDo.setEmail(datosRegistroDO.getEmail());
+        usuarioNuevoDo.setNombre(datosRegistroDO.getNombre());
+        usuarioNuevoDo.setMetodoRegistro(datosRegistroDO.getMetodoRegistro());
+        usuarioNuevoDo.setFechaNacimiento(datosRegistroDO.getFechaNacimiento());
+        usuarioNuevoDo.setPesoKg(datosRegistroDO.getPesoKg());
+        usuarioNuevoDo.setAlturaCm(datosRegistroDO.getAlturaCm());
+        usuarioNuevoDo.setFrecuenciaCardiacaMax(datosRegistroDO.getFrecuenciaCardiacaMax());
+        usuarioNuevoDo.setFrecuenciaCardiacaReposo(datosRegistroDO.getFrecuenciaCardiacaReposo());
+
+        usuarios.add(new UsuarioDO(usuarioNuevoDo, Long.valueOf(usuarios.size())));
     }
 
-    public Optional<TokenDO> crearSesion(LoginCredencialesDO credencialesDo) {
+    public TokenDO crearSesion(LoginCredencialesDO credencialesDo, MetodoRegistro metodoRegistro) throws Exception {
+        // Verificar en Meta/Google
+        AutenticacionGateway.getInstance().loginServicioExterno(credencialesDo, metodoRegistro);
+
+        // TODO
+
+        // Una vez se verifica credenciales correctas, comprobarlas con las de Strava
+        UsuarioDO usuarioExistente = null;
         for(UsuarioDO usuarioDo : usuarios) {
-            if(usuarioDo.getEmail().equalsIgnoreCase(credencialesDo.getEmail())) {
-                // Autentificacion de Meta/Google
-                // ...
-
-                // Generar token y crear sesion
-                String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                int longitudToken = 10;
-                char[] tokenAleatorio = new char[longitudToken];
-                for(int i = 0; i < longitudToken; i++) {
-                    tokenAleatorio[i] = caracteres.charAt((int)(Math.random() * caracteres.length()));
-                }
-                String valorTokenAleatorio = new String(tokenAleatorio);
-
-                TokenDO token = new TokenDO(valorTokenAleatorio);
-                sesiones.put(token, usuarioDo);
-
-                return Optional.of(token);
+            if (usuarioDo.getEmail().equalsIgnoreCase(credencialesDo.getEmail())) {
+                usuarioExistente = usuarioDo;
+                break;
             }
         }
 
-        return Optional.empty();
+        if(usuarioExistente == null) {
+            throw new Exception("El correo no esta registrado en Strava. Crea una cuenta.");
+        }
+
+        if(!metodoRegistro.equals(usuarioExistente.getMetodoRegistro())) {
+            throw new Exception("El correo esta registrado con \"" + usuarioExistente.getMetodoRegistro().toString() + "\". Prueba a usar ese metodo al iniciar sesion.");
+        }
+
+        // Generar token y crear sesion
+        String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        int longitudToken = 10;
+        char[] tokenAleatorio = new char[longitudToken];
+        for(int i = 0; i < longitudToken; i++) {
+            tokenAleatorio[i] = caracteres.charAt((int)(Math.random() * caracteres.length()));
+        }
+        String valorTokenAleatorio = new String(tokenAleatorio);
+
+        TokenDO token = new TokenDO(valorTokenAleatorio);
+        sesiones.put(token, usuarioExistente);
+
+        return token;
     }
 
     public void borrarSesion(TokenDO tokenDo) {

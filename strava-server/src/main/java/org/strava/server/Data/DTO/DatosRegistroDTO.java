@@ -7,13 +7,14 @@ import java.util.Date;
 
 public class DatosRegistroDTO implements Serializable {
     private String nombre;
-    private MetodoRegistro metodoRegistro;
     private Date fechaNacimiento;
     private Double pesoKg;
     private Double alturaCm;
     private Integer frecuenciaCardiacaMax;
     private Integer frecuenciaCardiacaReposo;
 
+    // Sobre el servicio externo
+    private MetodoRegistro metodoRegistro;
     private String email;
     private String contrasenya;
 

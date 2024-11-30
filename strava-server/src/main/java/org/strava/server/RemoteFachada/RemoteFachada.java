@@ -5,6 +5,7 @@ import org.strava.server.Data.DTO.Assemblers.*;
 import org.strava.server.Data.Dominio.RetoDO;
 import org.strava.server.Data.Dominio.SesionEntrenamientoNuevoDO;
 import org.strava.server.Data.Dominio.TokenDO;
+import org.strava.server.Data.Enums.MetodoRegistro;
 import org.strava.server.Servicios.ServicioAutenticacion;
 import org.strava.server.Servicios.ServicioReto;
 import org.strava.server.Servicios.ServicioSesionEntrenamiento;
@@ -28,7 +29,7 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     @Override
     public void authRegistrarGoogle(DatosRegistroDTO datosRegistroDto) throws RemoteException {
         try {
-            //servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
+            servicioAutenticacion.registrarUsuario(DatosRegistroAssembler.dtoToDo(datosRegistroDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -44,24 +45,22 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
 
     @Override
     public TokenDTO authLoginGoogle(LoginCredencialesDTO credencialesDto) throws RemoteException {
-        Optional<TokenDO> token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto));
-
-        return TokenAssembler.doToDto(
-                token.orElseThrow(() -> new RemoteException(
-                        "Las credenciales son incorrectas o el usuario no existe."
-                ))
-        );
+        try {
+            TokenDO token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto), MetodoRegistro.Google);
+            return TokenAssembler.doToDto(token);
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override
     public TokenDTO authLoginMeta(LoginCredencialesDTO credencialesDto) throws RemoteException {
-        Optional<TokenDO> token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto));
-
-        return TokenAssembler.doToDto(
-                token.orElseThrow(() -> new RemoteException(
-                        "Las credenciales son incorrectas o el usuario no existe."
-                ))
-        );
+        try {
+            TokenDO token = servicioAutenticacion.crearSesion(LoginCredencialesAssembler.dtoToDo(credencialesDto), MetodoRegistro.Meta);
+            return TokenAssembler.doToDto(token);
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override

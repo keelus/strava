@@ -1,5 +1,7 @@
 package org.strava.server.Data.Dominio;
 
+import org.strava.server.Data.Enums.MetodoRegistro;
+
 public class LoginCredencialesDO {
     private String email;
     private String contrasenya;
