@@ -5,10 +5,14 @@ import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLogin;
 import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLoginGoogle;
 import org.strava.server.Data.DTO.RetoDTO;
 import org.strava.server.Data.DTO.TokenDTO;
+import org.strava.server.Data.Enums.Deporte;
+import org.strava.server.Data.Enums.TipoObjetivo;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +55,13 @@ public class ListarRetosFrame extends JFrame {
             gbc.gridy = fila;
             gbc.weightx = 1.0;
 
+            gbc.insets = new Insets(0, 0, 10, 0);
+            if(columna == 0) {
+                gbc.insets.right = 5;
+            } else {
+                gbc.insets.left = 5;
+            }
+
             columna++;
             if(columna == NUM_COLUMNAS) {
                 fila += 1;
@@ -60,7 +71,11 @@ public class ListarRetosFrame extends JFrame {
 
             JPanel panelReto = new JPanel();
             panelReto.setLayout(new BorderLayout());
-            panelReto.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            panelReto.setBackground(Color.LIGHT_GRAY);
+            panelReto.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.BLACK),
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            ));
 
             boolean isAuthor = true;
 
@@ -72,21 +87,42 @@ public class ListarRetosFrame extends JFrame {
             autorLabel.setForeground(Color.GRAY);
 
 
-            JLabel fechaLabel = new JLabel("una fecha");
+            SimpleDateFormat fechaInicio = new SimpleDateFormat("d/M/yyyy");
+            String fechaInicioVisual = fechaInicio.format(reto.getFechaInicio());
+            SimpleDateFormat fechaFin = new SimpleDateFormat("d/M/yyyy");
+            String fechaFinVisual = fechaFin.format(reto.getFechaFin());
+
+            JLabel fechaLabel = new JLabel(fechaInicioVisual + " - " + fechaFinVisual);
             fechaLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
-            JLabel objetivoLabel = new JLabel("Objetivo: " + reto.getValorObjetivo() + " " + reto.getTipoObjetivo());
-            objetivoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+            String objetivoUnidad = "km";
+            if(reto.getTipoObjetivo() == TipoObjetivo.Tiempo) {
+                objetivoUnidad = "min";
+            }
+            JLabel objetivoLabel = new JLabel("Objetivo: " + reto.getValorObjetivo() + objetivoUnidad +  ", " + reto.getTipoObjetivo());
+            objetivoLabel.setFont(new Font("Arial", Font.BOLD, 12));
 
-            JLabel deportesLabel = new JLabel("Deportes: " + "asd");
-            deportesLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
-            JButton aceptarRetoButton = new JButton("Aceptar reto");
-            aceptarRetoButton.setBackground(Color.BLUE);
-            aceptarRetoButton.setForeground(Color.WHITE);
+            JButton aceptarRetoBoton = new JButton("Aceptar reto");
+            aceptarRetoBoton.setBackground(Color.BLUE);
+            aceptarRetoBoton.setForeground(Color.WHITE);
+
+            JPanel panelCategoria = new JPanel();
+            panelCategoria.setBackground(null);
+            // panelCategoria.setBackground(Color.GREEN);
+            panelCategoria.setLayout(new FlowLayout());
+            for(Deporte deporte : reto.getDeporte()) {
+                String iconoArchivo = "/ciclismo.png";
+                if(deporte.equals(Deporte.Running))
+                    iconoArchivo = "/running.png";
+                JLabel iconoCategoriaLabel = Utils.crearLabelImagen(getClass().getResource(iconoArchivo), 1.0f/10f);
+                iconoCategoriaLabel.setPreferredSize(new Dimension(25, 23));
+
+                panelCategoria.add(iconoCategoriaLabel);
+            }
 
             JPanel panelContenidoReto = new JPanel();
-            panelContenidoReto.setBackground(Color.LIGHT_GRAY);
+            panelContenidoReto.setBackground(null);
             panelContenidoReto.setLayout(new BoxLayout(panelContenidoReto, BoxLayout.Y_AXIS));
             panelContenidoReto.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelReto.getPreferredSize().height));
             panelContenidoReto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -95,14 +131,14 @@ public class ListarRetosFrame extends JFrame {
             panelContenidoReto.add(autorLabel);
             panelContenidoReto.add(fechaLabel);
             panelContenidoReto.add(objetivoLabel);
-            panelContenidoReto.add(deportesLabel);
 
-            JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-            panelBoton.setBackground(Color.LIGHT_GRAY);
-            panelBoton.add(aceptarRetoButton);
+            JPanel panelInferior = new JPanel(new BorderLayout());
+            panelInferior.setBackground(null);
+            panelInferior.add(aceptarRetoBoton, BorderLayout.EAST);
+            panelInferior.add(panelCategoria, BorderLayout.WEST);
 
             panelReto.add(panelContenidoReto, BorderLayout.NORTH);
-            panelReto.add(panelBoton, BorderLayout.SOUTH);
+            panelReto.add(panelInferior, BorderLayout.SOUTH);
 
 
             retosPanel.add(panelReto, gbc);
@@ -110,6 +146,7 @@ public class ListarRetosFrame extends JFrame {
 
 
         JScrollPane scrollPane = new JScrollPane(retosPanel);
+        scrollPane.setBorder(null);
         panelPrincipal.add(scrollPane, BorderLayout.CENTER);
         JButton botonVolver = new JButton("Volver");
         botonVolver.addActionListener(e -> {

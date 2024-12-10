@@ -30,13 +30,13 @@ public class Main {
             // Activa el antialiasing para el texto
             System.setProperty("awt.useSystemAAFontSettings", "on");
 
-            SwingUtilities.invokeLater(AutenticacionFrame::new);
+            // SwingUtilities.invokeLater(AutenticacionFrame::new);
 
             // Codigo temporal inicio
-            // char[] p = new char[]{'p', 'a', 's', 's'};
-            // Controlador.getInstance().iniciarSesion("user@gmail.com", p, FormularioExternoServicio.Google);
+            char[] p = new char[]{'p', 'a', 's', 's'};
+            Controlador.getInstance().iniciarSesion("user@gmail.com", p, FormularioExternoServicio.Google);
 
-            // new ListarRetosFrame(Controlador.getInstance().tokenSesion);
+            new ListarRetosFrame(Controlador.getInstance().tokenSesion);
         } catch (Exception e) {
             e.printStackTrace();
         }
