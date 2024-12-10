@@ -54,6 +54,7 @@ public class MainFrame extends JFrame {
         });
         listarButton.addActionListener(e -> {
             new ListarRetosFrame(this.tokenSesion);
+            dispose();
         });
         cerrarButton.addActionListener(e -> {
             JOptionPane.showMessageDialog(MainFrame.this, "Sesión cerrada");

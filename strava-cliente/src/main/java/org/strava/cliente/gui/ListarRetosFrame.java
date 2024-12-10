@@ -1,12 +1,15 @@
 package org.strava.cliente.gui;
 
 import org.strava.cliente.Controlador;
+import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLogin;
+import org.strava.cliente.gui.FormularioExterno.Login.FormularioExternoLoginGoogle;
 import org.strava.server.Data.DTO.RetoDTO;
 import org.strava.server.Data.DTO.TokenDTO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,48 +22,105 @@ public class ListarRetosFrame extends JFrame {
         setTitle("Lista de Retos");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
         setResizable(false);
+        setLocationRelativeTo(null);
 
-        // panel principal
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(45, 52, 54));
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BorderLayout());
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        JLabel titulo = new JLabel("Todos los retos");
+        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        panelPrincipal.add(titulo, BorderLayout.NORTH);
+
+        List<RetoDTO> retos = obtenerRetos();
+
+        JPanel retosPanel = new JPanel();
+
+        GridBagLayout layout = new GridBagLayout();
+        retosPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.BOTH;
 
-        // lista de retos
-        JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font("Roboto", Font.PLAIN, 14));
-        textArea.setEditable(false);
-        textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        textArea.setBackground(new Color(39, 43, 48));
-        textArea.setForeground(Color.WHITE);
+        int fila = 0;
+        int columna = 0;
+        final int NUM_COLUMNAS = 2;
+        for (RetoDTO reto : retos) {
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.gridx = columna;
+            gbc.gridy = fila;
+            gbc.weightx = 1.0;
 
-        // scroll para la lista
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.gridwidth = 2;
-        mainPanel.add(scrollPane, gbc);
+            columna++;
+            if(columna == NUM_COLUMNAS) {
+                fila += 1;
+                columna = 0;
+            }
 
-        // boton de actualizar
-        JButton actualizarButton = new JButton("Actualizar");
-        Utils.estilarButton(actualizarButton);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.gridwidth = 2;
-        mainPanel.add(actualizarButton, gbc);
 
-        actualizarButton.addActionListener(e -> listarRetos(textArea));
+            JPanel panelReto = new JPanel();
+            panelReto.setLayout(new BorderLayout());
+            panelReto.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        add(mainPanel);
-        listarRetos(textArea);
+            boolean isAuthor = true;
+
+            JLabel nombreLabel = new JLabel(reto.getNombre());
+            nombreLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+            JLabel autorLabel = new JLabel(isAuthor ? "Creado por ti" : "Creado por " + reto.getAutor());
+            autorLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+            autorLabel.setForeground(Color.GRAY);
+
+
+            JLabel fechaLabel = new JLabel("una fecha");
+            fechaLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+            JLabel objetivoLabel = new JLabel("Objetivo: " + reto.getValorObjetivo() + " " + reto.getTipoObjetivo());
+            objetivoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+            JLabel deportesLabel = new JLabel("Deportes: " + "asd");
+            deportesLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+            JButton aceptarRetoButton = new JButton("Aceptar reto");
+            aceptarRetoButton.setBackground(Color.BLUE);
+            aceptarRetoButton.setForeground(Color.WHITE);
+
+            JPanel panelContenidoReto = new JPanel();
+            panelContenidoReto.setBackground(Color.LIGHT_GRAY);
+            panelContenidoReto.setLayout(new BoxLayout(panelContenidoReto, BoxLayout.Y_AXIS));
+            panelContenidoReto.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelReto.getPreferredSize().height));
+            panelContenidoReto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+            panelContenidoReto.add(nombreLabel);
+            panelContenidoReto.add(autorLabel);
+            panelContenidoReto.add(fechaLabel);
+            panelContenidoReto.add(objetivoLabel);
+            panelContenidoReto.add(deportesLabel);
+
+            JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+            panelBoton.setBackground(Color.LIGHT_GRAY);
+            panelBoton.add(aceptarRetoButton);
+
+            panelReto.add(panelContenidoReto, BorderLayout.NORTH);
+            panelReto.add(panelBoton, BorderLayout.SOUTH);
+
+
+            retosPanel.add(panelReto, gbc);
+        }
+
+
+        JScrollPane scrollPane = new JScrollPane(retosPanel);
+        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+        JButton botonVolver = new JButton("Volver");
+        botonVolver.addActionListener(e -> {
+            new MainFrame();
+            dispose();
+        });
+        botonVolver.setForeground(Color.WHITE);
+        botonVolver.setBackground(Color.BLUE);
+        panelPrincipal.add(botonVolver, BorderLayout.SOUTH);
+        add(panelPrincipal);
+
         setVisible(true);
     }
 
@@ -82,5 +142,22 @@ public class ListarRetosFrame extends JFrame {
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al listar retos: " + e.getCause());
         }
+    }
+
+    private List<RetoDTO> obtenerRetos() {
+        try {
+            // List<RetoDTO> retos = new ArrayList<RetoDTO>();
+            List<RetoDTO> rs = Controlador.getInstance().conseguirRetosActivos(new Date());
+            return rs;
+            // for(int i = 0; i < 3; i++ ) {
+            //     for (RetoDTO r : rs) {
+            //         retos.add(r);
+            //     }
+            // }
+            // return retos;
+        } catch (RemoteException e) {
+            JOptionPane.showMessageDialog(this, "Error al listar retos: " + e.getCause());
+        }
+        return null;
     }
 }

@@ -11,7 +11,8 @@ import java.util.List;
 public class Controlador {
     private static Controlador instance;
     private IRemoteFachada remoteFachada;
-    private TokenDTO tokenSesion;
+    // private TokenDTO tokenSesion;
+    public TokenDTO tokenSesion;
 
     private Controlador() {
         this.remoteFachada = Localizador.getRemoteFachada();
