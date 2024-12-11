@@ -1,13 +1,10 @@
 package org.strava.cliente;
 
-import javax.swing.*;
-
 import org.strava.cliente.gui.AutenticacionFrame;
 import org.strava.cliente.gui.FormularioExterno.FormularioExternoServicio;
-import org.strava.cliente.gui.ListarRetosFrame;
-import org.strava.server.Data.DTO.LoginCredencialesDTO;
+import org.strava.cliente.gui.ListarRetosActivosFrame;
 
-import java.rmi.RemoteException;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,13 +27,17 @@ public class Main {
             // Activa el antialiasing para el texto
             System.setProperty("awt.useSystemAAFontSettings", "on");
 
-            SwingUtilities.invokeLater(AutenticacionFrame::new);
+            boolean debug = true;
+            if(debug) {
+                // // Codigo temporal inicio
+                char[] p = new char[]{'p', 'a', 's', 's'};
+                Controlador.getInstance().iniciarSesion("user@gmail.com", p, FormularioExternoServicio.Google);
 
-            // Codigo temporal inicio
-            // char[] p = new char[]{'p', 'a', 's', 's'};
-            // Controlador.getInstance().iniciarSesion("user@gmail.com", p, FormularioExternoServicio.Google);
+                new ListarRetosActivosFrame(Controlador.getInstance().tokenSesion);
+            } else {
+                SwingUtilities.invokeLater(AutenticacionFrame::new);
+            }
 
-            // new ListarRetosFrame(Controlador.getInstance().tokenSesion);
         } catch (Exception e) {
             e.printStackTrace();
         }

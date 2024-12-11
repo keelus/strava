@@ -16,6 +16,7 @@ public class RetoDTO implements Serializable  {
     private TipoObjetivo tipoObjetivo;
     private float valorObjetivo;
     private ArrayList<Deporte> deporte;
+    private boolean aceptadoPorUsuario;
 
     public Long getId() {
         return id;
@@ -79,5 +80,13 @@ public class RetoDTO implements Serializable  {
 
     public void setDeporte(ArrayList<Deporte> deporte) {
         this.deporte = deporte;
+    }
+
+    public boolean isAceptadoPorUsuario() {
+        return aceptadoPorUsuario;
+    }
+
+    public void setAceptadoPorUsuario(boolean aceptadoPorUsuario) {
+        this.aceptadoPorUsuario = aceptadoPorUsuario;
     }
 }

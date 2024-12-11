@@ -1,5 +1,7 @@
 package org.strava.server.Data.DTO;
 
+import org.strava.server.Data.Enums.Deporte;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Date;
@@ -11,6 +13,7 @@ public class SesionEntrenamientoDTO implements Serializable {
     private Date fechaInicio;
     private int horaInicio;
     private Duration duracion;
+    private Deporte deporte;
 
     public Long getId() {
         return id;
@@ -58,5 +61,13 @@ public class SesionEntrenamientoDTO implements Serializable {
 
     public void setDuracion(Duration duracion) {
         this.duracion = duracion;
+    }
+
+    public Deporte getDeporte() {
+        return deporte;
+    }
+
+    public void setDeporte(Deporte deporte) {
+        this.deporte = deporte;
     }
 }

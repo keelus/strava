@@ -16,6 +16,7 @@ public class SesionEntrenamientoAssembler {
         sesionEntrenamientoDto.setFechaInicio(sesionEntrenamientoDo.getFechaInicio());
         sesionEntrenamientoDto.setHoraInicio(sesionEntrenamientoDo.getHoraInicio());
         sesionEntrenamientoDto.setDuracion(sesionEntrenamientoDo.getDuracion());
+        sesionEntrenamientoDto.setDeporte(sesionEntrenamientoDo.getDeporte());
 
         return sesionEntrenamientoDto;
     }
@@ -28,6 +29,7 @@ public class SesionEntrenamientoAssembler {
         sesionEntrenamientoDo.setFechaInicio(sesionEntrenamientoDto.getFechaInicio());
         sesionEntrenamientoDo.setHoraInicio(sesionEntrenamientoDto.getHoraInicio());
         sesionEntrenamientoDo.setDuracion(sesionEntrenamientoDto.getDuracion());
+        sesionEntrenamientoDo.setDeporte(sesionEntrenamientoDto.getDeporte());
 
         return sesionEntrenamientoDo;
     }

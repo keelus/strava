@@ -68,13 +68,52 @@ public class ServicioReto {
         if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             List<RetoDO> retosActivos = new ArrayList<>();
             for(RetoDO reto: retos.values()) {
-                //if(reto.getFechaFin().before(fechaLimite)) {
+                if(reto.getFechaFin().after(fechaLimite)) {
                     retosActivos.add(reto);
-                //}
+                }
             }
             return retosActivos;
         } else {
             throw new Exception("El token de sesion no es valido.");
         }
+    }
+
+    public List<RetoDO> getRetosAceptados(TokenDO tokenDo) throws Exception {
+        if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
+            List<RetoDO> retosAceptadosPorUsuario = new ArrayList<>();
+            UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
+            if(retosAceptados.containsKey(usuarioDo.getId())) {
+                List<Long> retosIdAceptadosPorUsuario = retosAceptados.get(usuarioDo.getId());
+
+                for(Long retoAceptadoId : retosIdAceptadosPorUsuario) {
+                    retosAceptadosPorUsuario.add(retos.get(retoAceptadoId));
+                }
+            }
+
+            return retosAceptadosPorUsuario;
+        } else {
+            throw new Exception("El token de sesion no es valido.");
+        }
+    }
+
+    public boolean isRetoAceptadoPorUsuario(TokenDO tokenDo, Long retoId) throws Exception {
+        // Comprobar si el token es valido
+        if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
+            boolean retoExiste = retos.containsKey(retoId);
+
+            if (retoExiste) {
+                UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
+
+                if (retosAceptados.containsKey(usuarioDo.getId())) {
+                    return retosAceptados.get(usuarioDo.getId()).contains(retoId);
+                }
+            } else {
+                return false;
+            }
+        } else {
+            throw new Exception("El reto no existe.");
+        }
+
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package org.strava.server.RemoteFachada;
 import org.strava.server.Data.DTO.*;
 import org.strava.server.Data.DTO.Assemblers.*;
 import org.strava.server.Data.Dominio.RetoDO;
+import org.strava.server.Data.Dominio.SesionEntrenamientoDO;
 import org.strava.server.Data.Dominio.SesionEntrenamientoNuevoDO;
 import org.strava.server.Data.Dominio.TokenDO;
 import org.strava.server.Data.Enums.MetodoRegistro;
@@ -86,24 +87,41 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     }
 
     @Override
-    public void retoAceptar(TokenDTO tokenDto, Long retoId) throws RemoteException{
+    public void retoAceptar(TokenDTO tokenDto, RetoDTO retoDto) throws RemoteException{
         try {
-            servicioReto.aceptarReto(TokenAssembler.dtoToDo(tokenDto), retoId);
+            servicioReto.aceptarReto(TokenAssembler.dtoToDo(tokenDto), retoDto.getId());
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public List<RetoDTO> retoListarActivos(TokenDTO tokenDto, Date fechaLimite) throws RemoteException{
+    public List<RetoDTO> retoListarActivos(TokenDTO tokenDto, Date fechaLimite) throws RemoteException {
         TokenDO tokenDo = TokenAssembler.dtoToDo(tokenDto);
+
         try {
             List<RetoDO> retosActivosDO = servicioReto.getRetosActivos(tokenDo, fechaLimite);
             List<RetoDTO> retosActivos = new ArrayList<>();
             for(RetoDO retoActivoDo : retosActivosDO) {
-                retosActivos.add(RetoAssembler.doToDto(retoActivoDo));
+                boolean retoAceptadoPorUsuario = servicioReto.isRetoAceptadoPorUsuario(tokenDo, retoActivoDo.getId());
+                retosActivos.add(RetoAssembler.doToDto(retoActivoDo, retoAceptadoPorUsuario));
             }
             return retosActivos;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    public List<RetoDTO> retoListarAceptados(TokenDTO tokenDto) throws RemoteException {
+        TokenDO tokenDo = TokenAssembler.dtoToDo(tokenDto);
+
+        try {
+            List<RetoDO> retosAceptadosDO = servicioReto.getRetosAceptados(tokenDo);
+            List<RetoDTO> retosAceptados = new ArrayList<>();
+            for(RetoDO retoActivoDo : retosAceptadosDO) {
+                retosAceptados.add(RetoAssembler.doToDto(retoActivoDo, true));
+            }
+            return retosAceptados;
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -116,6 +134,22 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
         SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo = SesionEntrenamientoNuevoAssembler.dtoToDo(sesionEntrenamientoNuevoDto);
         try {
             servicioSesionEntrenamiento.crearSesionEntrenamiento(tokenDo, sesionEntrenamientoNuevoDo);
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<SesionEntrenamientoDTO> sesionEntrenamientoListar(TokenDTO tokenDto) throws RemoteException {
+        TokenDO tokenDo = TokenAssembler.dtoToDo(tokenDto);
+
+        try {
+            List<SesionEntrenamientoDO> sesionesEntrenamientoDo = servicioSesionEntrenamiento.getSesionesEntrenamientos(tokenDo);
+            List<SesionEntrenamientoDTO> sesionesEntrenamiento = new ArrayList<>();
+            for(SesionEntrenamientoDO sesionEntrenamientoDo: sesionesEntrenamientoDo) {
+                sesionesEntrenamiento.add(SesionEntrenamientoAssembler.doToDto(sesionEntrenamientoDo));
+            }
+            return sesionesEntrenamiento;
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }

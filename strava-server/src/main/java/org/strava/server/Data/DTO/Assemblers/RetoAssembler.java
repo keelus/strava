@@ -6,7 +6,7 @@ import org.strava.server.Data.Dominio.UsuarioDO;
 import org.strava.server.Servicios.ServicioAutenticacion;
 
 public class RetoAssembler {
-    public static RetoDTO doToDto(RetoDO reto) throws Exception{
+    public static RetoDTO doToDto(RetoDO reto, boolean aceptadoPorUsuario) throws Exception{
         RetoDTO retoDto = new RetoDTO();
 
         retoDto.setId(reto.getId());
@@ -18,6 +18,7 @@ public class RetoAssembler {
         retoDto.setTipoObjetivo(reto.getTipoObjetivo());
         retoDto.setFechaInicio(reto.getFechaInicio());
         retoDto.setFechaFin(reto.getFechaFin());
+        retoDto.setAceptadoPorUsuario(aceptadoPorUsuario);
 
         return retoDto;
     }

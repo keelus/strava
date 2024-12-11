@@ -20,8 +20,10 @@ public interface IRemoteFachada extends Remote {
     void authLogout(TokenDTO tokenDto) throws RemoteException;
 
     void retoCrear(TokenDTO tokenDto, RetoNuevoDTO retoNuevoDto) throws RemoteException;
-    void retoAceptar(TokenDTO tokenDto, Long retoId) throws RemoteException;
+    void retoAceptar(TokenDTO tokenDto, RetoDTO retoDto) throws RemoteException;
     List<RetoDTO> retoListarActivos(TokenDTO tokenDto, Date fechaLimite) throws RemoteException;
+    List<RetoDTO> retoListarAceptados(TokenDTO tokenDto) throws RemoteException;
 
     void sesionEntrenamientoCrear(TokenDTO tokenDto, SesionEntrenamientoNuevoDTO sesionEntrenamientoNuevoDto) throws RemoteException;
+    List<SesionEntrenamientoDTO> sesionEntrenamientoListar(TokenDTO tokenDto) throws RemoteException;
 }

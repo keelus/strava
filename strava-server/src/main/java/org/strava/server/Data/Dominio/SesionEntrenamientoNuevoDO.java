@@ -1,5 +1,7 @@
 package org.strava.server.Data.Dominio;
 
+import org.strava.server.Data.Enums.Deporte;
+
 import java.time.Duration;
 import java.util.Date;
 
@@ -9,6 +11,7 @@ public class SesionEntrenamientoNuevoDO {
     private Date fechaInicio;
     private int horaInicio;
     private Duration duracion;
+    private Deporte deporte;
 
     public String getTitulo() {
         return titulo;
@@ -48,5 +51,13 @@ public class SesionEntrenamientoNuevoDO {
 
     public void setDuracion(Duration duracion) {
         this.duracion = duracion;
+    }
+
+    public Deporte getDeporte() {
+        return deporte;
+    }
+
+    public void setDeporte(Deporte deporte) {
+        this.deporte = deporte;
     }
 }

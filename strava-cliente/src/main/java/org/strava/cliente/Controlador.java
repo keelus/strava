@@ -44,11 +44,27 @@ public class Controlador {
             remoteFachada.authRegistrarMeta(datosRegistroDto);
     }
 
+    public void aceptarReto(RetoDTO retoDto) throws RemoteException {
+        remoteFachada.retoAceptar(this.tokenSesion, retoDto);
+    }
+
     public void crearReto(RetoNuevoDTO reto) throws RemoteException {
         remoteFachada.retoCrear(this.tokenSesion, reto);
     }
 
     public List<RetoDTO> conseguirRetosActivos(Date fechaLimite) throws RemoteException {
         return remoteFachada.retoListarActivos(this.tokenSesion, fechaLimite);
+    }
+
+    public List<RetoDTO> conseguirRetosAceptados() throws RemoteException {
+        return remoteFachada.retoListarAceptados(this.tokenSesion);
+    }
+
+    public void crearSesionEntrenamiento(SesionEntrenamientoNuevoDTO sesion) throws RemoteException {
+        remoteFachada.sesionEntrenamientoCrear(this.tokenSesion, sesion);
+    }
+
+    public List<SesionEntrenamientoDTO> conseguirSesionesEntrenamiento() throws RemoteException {
+        return remoteFachada.sesionEntrenamientoListar(this.tokenSesion);
     }
 }

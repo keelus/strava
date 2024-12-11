@@ -25,35 +25,70 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // boton crear reto
-        JButton crearRetoButton = new JButton("Crear Reto");
+        JButton crearRetoButton = new JButton("Crear reto");
         Utils.estilarButton(crearRetoButton);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         menuPanel.add(crearRetoButton, gbc);
 
-        // boton listar retos
-        JButton listarButton = new JButton("Listar Retos");
-        Utils.estilarButton(listarButton);
+        // boton crear sesion
+        JButton crearSesionButton = new JButton("Crear sesion de entrenamiento");
+        Utils.estilarButton(crearSesionButton);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
-        menuPanel.add(listarButton, gbc);
+        menuPanel.add(crearSesionButton, gbc);
+
+        // boton listar retos
+        JButton listarRetosActivosButton = new JButton("Listar retos activos");
+        Utils.estilarButton(listarRetosActivosButton);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        menuPanel.add(listarRetosActivosButton, gbc);
+
+        // boton listar retos
+        JButton listarRetosAceptadosButton = new JButton("Listar retos aceptados");
+        Utils.estilarButton(listarRetosAceptadosButton);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        menuPanel.add(listarRetosAceptadosButton, gbc);
+
+        // boton listar sesiones
+        JButton listarSesionesEntrenamientoButton = new JButton("Listar sesiones de entrenamiento");
+        Utils.estilarButton(listarSesionesEntrenamientoButton);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        menuPanel.add(listarSesionesEntrenamientoButton, gbc);
 
         // boton cerrar sesión
-        JButton cerrarButton = new JButton("Cerrar Sesión");
+        JButton cerrarButton = new JButton("Cerrar sesión");
         Utils.estilarButton(cerrarButton);
         cerrarButton.setBackground(new Color(231, 76, 60));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 5;
         gbc.gridwidth = 2;
         menuPanel.add(cerrarButton, gbc);
 
         crearRetoButton.addActionListener(e -> {
             new CrearRetoFrame(this.tokenSesion);
         });
-        listarButton.addActionListener(e -> {
-            new ListarRetosFrame(this.tokenSesion);
+        crearSesionButton.addActionListener(e -> {
+            new CrearSesionEntrenamientoFrame(this.tokenSesion);
+        });
+        listarRetosActivosButton.addActionListener(e -> {
+            new ListarRetosActivosFrame(this.tokenSesion);
+            dispose();
+        });
+        listarRetosAceptadosButton.addActionListener(e -> {
+            new ListarRetosAceptadosFrame(this.tokenSesion);
+            dispose();
+        });
+        listarSesionesEntrenamientoButton.addActionListener(e -> {
+            new ListarSesionesEntrenamientoFrame(this.tokenSesion);
             dispose();
         });
         cerrarButton.addActionListener(e -> {

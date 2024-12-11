@@ -214,8 +214,17 @@ public class CrearRetoFrame extends JFrame {
 
             RetoNuevoDTO reto = new RetoNuevoDTO();
             reto.setNombre(nombreRetoField.getText());
-            reto.setFechaInicio((Date)fechaInicioSpinner.getValue());
-            reto.setFechaFin((Date)fechaFinSpinner.getValue());
+
+            Date fechaInicio = (Date)fechaInicioSpinner.getValue();
+            // Hora, min y sec a ultima hora
+            Date fechaInicioCorrecta = new Date(fechaInicio.getYear(), fechaInicio.getMonth(), fechaInicio.getDate(), 23, 59, 59);
+            reto.setFechaInicio(fechaInicioCorrecta);
+
+            Date fechaFin = (Date)fechaFinSpinner.getValue();
+            // Hora, min y sec a ultima hora
+            Date fechaFinCorrecta = new Date(fechaFin.getYear(), fechaFin.getMonth(), fechaFin.getDate(), 23, 59, 59);
+            reto.setFechaFin(fechaFinCorrecta);
+
             reto.setValorObjetivo(Integer.valueOf(valorObjetivoField.getText()));
             if(tipoObjetivoComboBox.getSelectedItem().toString().equals("Distancia")) {
                 reto.setTipoObjetivo(TipoObjetivo.Distancia);
