@@ -21,9 +21,19 @@ public class RetoDO {
     public RetoDO(RetoNuevoDO retoNuevoDo, Long retoId) {
         this.id = retoId;
         this.nombre = retoNuevoDo.getNombre();
-        //this.autorId = retoNuevoDo.ge();
-        this.fechaInicio = retoNuevoDo.getFechaInicio();
-        this.fechaFin = retoNuevoDo.getFechaFin();
+
+        // Poner fecha inicio a las 00hs
+        int inicioAnyo = retoNuevoDo.getFechaInicio().getYear();
+        int inicioMes = retoNuevoDo.getFechaInicio().getMonth();
+        int inicioDia = retoNuevoDo.getFechaInicio().getDate();
+        this.fechaInicio = new Date(inicioAnyo, inicioMes, inicioDia, 0, 0, 0);
+
+        // Poner fecha fin a las 23:59hs
+        int finAnyo = retoNuevoDo.getFechaFin().getYear();
+        int finMes = retoNuevoDo.getFechaFin().getMonth();
+        int finDia = retoNuevoDo.getFechaFin().getDate();
+        this.fechaFin = new Date(finAnyo, finMes, finDia, 23, 59, 59);
+
         this.tipoObjetivo = retoNuevoDo.getTipoObjetivo();
         this.valorObjetivo = retoNuevoDo.getValorObjetivo();
         this.deporte = retoNuevoDo.getDeporte();

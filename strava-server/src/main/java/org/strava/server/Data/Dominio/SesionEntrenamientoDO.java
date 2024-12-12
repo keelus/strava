@@ -11,7 +11,6 @@ public class SesionEntrenamientoDO {
     private String titulo;
     private float distanciaKm;
     private Date fechaInicio;
-    private int horaInicio;
     private Duration duracion;
     private Deporte deporte;
 
@@ -22,10 +21,9 @@ public class SesionEntrenamientoDO {
         this.autorId = autorId;
         this.titulo = sesionEntrenamientoNuevoDo.getTitulo();
         this.distanciaKm = sesionEntrenamientoNuevoDo.getDistanciaKm();
-        this.fechaInicio = sesionEntrenamientoNuevoDo.getFechaInicio();
-        this.horaInicio = sesionEntrenamientoNuevoDo.getHoraInicio();
         this.duracion = sesionEntrenamientoNuevoDo.getDuracion();
         this.deporte = sesionEntrenamientoNuevoDo.getDeporte();
+        this.fechaInicio = sesionEntrenamientoNuevoDo.getFechaInicio();
     }
 
     public Long getId() {
@@ -58,14 +56,6 @@ public class SesionEntrenamientoDO {
 
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
-    }
-
-    public int getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(int horaInicio) {
-        this.horaInicio = horaInicio;
     }
 
     public Duration getDuracion() {

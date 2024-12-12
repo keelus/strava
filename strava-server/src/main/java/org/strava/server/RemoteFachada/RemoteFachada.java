@@ -2,11 +2,9 @@ package org.strava.server.RemoteFachada;
 
 import org.strava.server.Data.DTO.*;
 import org.strava.server.Data.DTO.Assemblers.*;
-import org.strava.server.Data.Dominio.RetoDO;
-import org.strava.server.Data.Dominio.SesionEntrenamientoDO;
-import org.strava.server.Data.Dominio.SesionEntrenamientoNuevoDO;
-import org.strava.server.Data.Dominio.TokenDO;
+import org.strava.server.Data.Dominio.*;
 import org.strava.server.Data.Enums.MetodoRegistro;
+import org.strava.server.Data.Enums.TipoObjetivo;
 import org.strava.server.Servicios.ServicioAutenticacion;
 import org.strava.server.Servicios.ServicioReto;
 import org.strava.server.Servicios.ServicioSesionEntrenamiento;
@@ -38,7 +36,7 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
     @Override
     public void authRegistrarMeta(DatosRegistroDTO datosRegistroDto) throws RemoteException {
         try {
-            //servicioAutenticacion.registrarUsuario(UsuarioNuevoAssembler.dtoToDo(usuarioNuevoDto));
+            servicioAutenticacion.registrarUsuario(DatosRegistroAssembler.dtoToDo(datosRegistroDto));
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }
@@ -117,9 +115,36 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
 
         try {
             List<RetoDO> retosAceptadosDO = servicioReto.getRetosAceptados(tokenDo);
+            List<SesionEntrenamientoDO> sesionesDo = servicioSesionEntrenamiento.getSesionesEntrenamientos(tokenDo);
             List<RetoDTO> retosAceptados = new ArrayList<>();
             for(RetoDO retoActivoDo : retosAceptadosDO) {
-                retosAceptados.add(RetoAssembler.doToDto(retoActivoDo, true));
+                RetoDTO retoDto = RetoAssembler.doToDto(retoActivoDo, true);
+                float objetivo = retoDto.getValorObjetivo();
+                float sumaObjetivo = 0;
+
+
+                for(SesionEntrenamientoDO sesionDo: sesionesDo) {
+                    if(retoDto.getDeporte().contains(sesionDo.getDeporte())) {
+                        if (sesionDo.getFechaInicio().after(retoDto.getFechaFin()) ||
+                                sesionDo.getFechaInicio().before(retoDto.getFechaInicio())) {
+                            continue;
+                        }
+
+                        if (retoDto.getTipoObjetivo().equals(TipoObjetivo.Distancia)) {
+                            sumaObjetivo += sesionDo.getDistanciaKm();
+                        } else {
+                            sumaObjetivo += sesionDo.getDuracion().toMinutes();
+                        }
+                    }
+                }
+
+                // Sobre 100
+                float porcentajeCompletado = sumaObjetivo * 100.0f / objetivo;
+                if(porcentajeCompletado < 0.00f) porcentajeCompletado = 0.00f;
+                else if(porcentajeCompletado >= 100.00f) porcentajeCompletado = 100.00f;
+
+                retoDto.setPorcentajeCompletado(porcentajeCompletado);
+                retosAceptados.add(retoDto);
             }
             return retosAceptados;
         } catch (Exception e) {
@@ -150,6 +175,18 @@ public class RemoteFachada extends UnicastRemoteObject implements IRemoteFachada
                 sesionesEntrenamiento.add(SesionEntrenamientoAssembler.doToDto(sesionEntrenamientoDo));
             }
             return sesionesEntrenamiento;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public UsuarioDTO conseguirUsuarioDeToken(TokenDTO tokenDto) throws  RemoteException {
+        TokenDO tokenDo = TokenAssembler.dtoToDo(tokenDto);
+
+        try {
+            UsuarioDO usuarioDo = servicioAutenticacion.conseguirUsuarioDeToken(tokenDo);
+            return UsuarioAssembler.doToDto(usuarioDo);
         } catch (Exception e) {
             throw new RemoteException(e.getMessage());
         }

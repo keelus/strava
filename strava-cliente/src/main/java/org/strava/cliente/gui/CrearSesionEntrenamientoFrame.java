@@ -186,14 +186,14 @@ public class CrearSesionEntrenamientoFrame extends JFrame {
             SesionEntrenamientoNuevoDTO sesion = new SesionEntrenamientoNuevoDTO();
             sesion.setTitulo(tituloField.getText());
 
-            Date fechaInicio = (Date)fechaInicioSpinner.getValue();
-            // Hora, min y sec a 0
-            Date fechaInicioCorrecta = new Date(fechaInicio.getYear(), fechaInicio.getMonth(), fechaInicio.getDate(), 0, 0, 0);
-            sesion.setFechaInicio(fechaInicioCorrecta);
+            sesion.setDistanciaKm(Float.valueOf(distanciaField.getText()));
 
-            // Esto queda por hacer
-            // Date horaInicio = (Date)horaInicioSpinner.getValue();
-            sesion.setHoraInicio(0);
+            Date fechaInicio = (Date)fechaInicioSpinner.getValue();
+            Date horaInicio = (Date)horaInicioSpinner.getValue();
+            // Hora, min y sec a 0
+            System.out.println(horaInicio.getHours() + ":" + horaInicio.getMinutes() + ":" + horaInicio.getSeconds());
+            Date fechaInicioCorrecta = new Date(fechaInicio.getYear(), fechaInicio.getMonth(), fechaInicio.getDate(), horaInicio.getHours(), horaInicio.getMinutes(), horaInicio.getMinutes());
+            sesion.setFechaInicio(fechaInicioCorrecta);
 
             Duration duracion = Duration.ofMinutes(Integer.valueOf(duracionField.getText()));
             sesion.setDuracion(duracion);

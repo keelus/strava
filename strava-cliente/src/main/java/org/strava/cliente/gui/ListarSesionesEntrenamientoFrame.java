@@ -101,18 +101,18 @@ public class ListarSesionesEntrenamientoFrame extends JFrame {
         JLabel tituloLabel = new JLabel(sesion.getTitulo());
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // JLabel autorLabel = new JLabel(isAuthor ? "Creado por ti" : "Creado por " + reto.getAutor());
-        // autorLabel.setFont(new Font("Arial", Font.ITALIC, 12));
-        // autorLabel.setForeground(Color.GRAY);
+        JLabel distanciaDuracionLabel = new JLabel(sesion.getDistanciaKm()  + "km, " + sesion.getDuracion().toMinutes() + "min");
+        distanciaDuracionLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        distanciaDuracionLabel.setForeground(Color.GRAY);
 
 
-        // SimpleDateFormat fechaInicio = new SimpleDateFormat("d/M/yyyy");
-        // String fechaInicioVisual = fechaInicio.format(reto.getFechaInicio());
-        // SimpleDateFormat fechaFin = new SimpleDateFormat("d/M/yyyy");
-        // String fechaFinVisual = fechaFin.format(reto.getFechaFin());
+        SimpleDateFormat fechaInicio = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaInicioVisual = fechaInicio.format(sesion.getFechaInicio());
+        SimpleDateFormat horaInicio = new SimpleDateFormat("hh:mm:dd");
+        String horaInicioVisual = horaInicio.format(sesion.getFechaInicio());
 
-        // JLabel fechaLabel = new JLabel(fechaInicioVisual + " - " + fechaFinVisual);
-        // fechaLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        JLabel fechaLabel = new JLabel(fechaInicioVisual + ", " + horaInicioVisual);
+        fechaLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
         // String objetivoUnidad = "km";
         // if(reto.getTipoObjetivo() == TipoObjetivo.Tiempo) {
@@ -122,19 +122,18 @@ public class ListarSesionesEntrenamientoFrame extends JFrame {
         // objetivoLabel.setFont(new Font("Arial", Font.BOLD, 12));
 
 
-        // JPanel panelCategoria = new JPanel();
-        // panelCategoria.setBackground(null);
-        // // panelCategoria.setBackground(Color.GREEN);
-        // panelCategoria.setLayout(new FlowLayout());
-        // for(Deporte deporte : reto.getDeporte()) {
-        //     String iconoArchivo = "/ciclismo.png";
-        //     if(deporte.equals(Deporte.Running))
-        //         iconoArchivo = "/running.png";
-        //     JLabel iconoCategoriaLabel = Utils.crearLabelImagen(getClass().getResource(iconoArchivo), 1.0f/10f);
-        //     iconoCategoriaLabel.setPreferredSize(new Dimension(25, 23));
+        JPanel panelCategoria = new JPanel();
+        panelCategoria.setBackground(null);
+        // panelCategoria.setBackground(Color.GREEN);
+        panelCategoria.setLayout(new FlowLayout());
+        String iconoArchivo = "/ciclismo.png";
+        if(sesion.getDeporte().equals(Deporte.Running)) {
+            iconoArchivo = "/running.png";
+        }
+        JLabel iconoCategoriaLabel = Utils.crearLabelImagen(getClass().getResource(iconoArchivo), 1.0f/10f);
+        iconoCategoriaLabel.setPreferredSize(new Dimension(25, 23));
 
-        //     panelCategoria.add(iconoCategoriaLabel);
-        // }
+        panelCategoria.add(iconoCategoriaLabel);
 
         JPanel panelContenidoReto = new JPanel();
         panelContenidoReto.setBackground(null);
@@ -143,12 +142,12 @@ public class ListarSesionesEntrenamientoFrame extends JFrame {
         panelContenidoReto.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         panelContenidoReto.add(tituloLabel);
-        // panelContenidoReto.add(autorLabel);
-        // panelContenidoReto.add(fechaLabel);
-        // panelContenidoReto.add(objetivoLabel);
+        panelContenidoReto.add(distanciaDuracionLabel);
+        panelContenidoReto.add(fechaLabel);
 
         JPanel panelInferior = new JPanel(new BorderLayout());
         panelInferior.setBackground(null);
+        panelInferior.add(panelCategoria);
 
         panelReto.add(panelContenidoReto, BorderLayout.NORTH);
         panelReto.add(panelInferior, BorderLayout.SOUTH);

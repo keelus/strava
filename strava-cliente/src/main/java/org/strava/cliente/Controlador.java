@@ -26,6 +26,11 @@ public class Controlador {
         return instance;
     }
 
+    public Long conseguirUsuarioIdSesionActual() throws RemoteException {
+        return remoteFachada.conseguirUsuarioDeToken(tokenSesion).getId();
+    }
+
+
     public void iniciarSesion(String email, char[] contrasenya, FormularioExternoServicio servicio) throws RemoteException {
         LoginCredencialesDTO credenciales = new LoginCredencialesDTO();
         credenciales.setEmail(email);

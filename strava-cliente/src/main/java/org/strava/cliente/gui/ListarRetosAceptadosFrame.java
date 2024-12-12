@@ -151,8 +151,36 @@ public class ListarRetosAceptadosFrame extends JFrame {
         panelInferior.setBackground(null);
         panelInferior.add(panelCategoria, BorderLayout.WEST);
 
-        panelReto.add(panelContenidoReto, BorderLayout.NORTH);
+        panelReto.add(panelContenidoReto, BorderLayout.CENTER);
         panelReto.add(panelInferior, BorderLayout.SOUTH);
+
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        gbc2.gridx = 0;
+        gbc2.gridy = 0;
+        gbc2.weightx = 1.0;
+
+        // Panel completado
+        JPanel panelCompletado = new JPanel(new GridBagLayout());
+        panelCompletado.setBackground(null);
+        JLabel panelCompletadoTitulo = new JLabel("Completado en un");
+        panelCompletadoTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        panelCompletadoTitulo.setFont(new Font("Arial", Font.PLAIN, 12));
+        int porcentaje = Math.round(reto.getPorcentajeCompletado());
+        JLabel panelCompletadoPorcentaje = new JLabel(porcentaje + "%");
+        panelCompletadoPorcentaje.setHorizontalAlignment(SwingConstants.CENTER);
+        panelCompletadoPorcentaje.setFont(new Font("Arial", Font.BOLD, 24));
+
+        if(porcentaje <= 25) panelCompletadoPorcentaje.setForeground(Color.RED);
+        else if(porcentaje <= 50) panelCompletadoPorcentaje.setForeground(Color.ORANGE);
+        else if(porcentaje <= 60) panelCompletadoPorcentaje.setForeground(Color.YELLOW);
+        else panelCompletadoPorcentaje.setForeground(Color.GREEN);
+
+        panelCompletado.add(panelCompletadoTitulo, gbc2);
+        gbc2.insets.top = 10;
+        gbc2.gridy = 2;
+        panelCompletado.add(panelCompletadoPorcentaje, gbc2);
+        panelReto.add(panelCompletado, BorderLayout.EAST);
 
 
         RetoElemento retoElemento = new RetoElemento();

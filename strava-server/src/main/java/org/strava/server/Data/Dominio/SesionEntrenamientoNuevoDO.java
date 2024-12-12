@@ -9,7 +9,6 @@ public class SesionEntrenamientoNuevoDO {
     private String titulo;
     private float distanciaKm;
     private Date fechaInicio;
-    private int horaInicio;
     private Duration duracion;
     private Deporte deporte;
 
@@ -35,14 +34,6 @@ public class SesionEntrenamientoNuevoDO {
 
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
-    }
-
-    public int getHoraInicio() {
-        return horaInicio;
-    }
-
-    public void setHoraInicio(int horaInicio) {
-        this.horaInicio = horaInicio;
     }
 
     public Duration getDuracion() {

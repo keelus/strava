@@ -21,8 +21,11 @@ public class GoogleServer implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Usuario user1 = new Usuario("user@gmail.com", "pass");
-		usuarioRepositorio.save(user1);
+		Usuario usuario1 = new Usuario("usuario1@gmail.com", "1234");
+		usuarioRepositorio.save(usuario1);
+
+		Usuario usuario2 = new Usuario("usuario2@gmail.com", "1234");
+		usuarioRepositorio.save(usuario2);
 	}
 }
 

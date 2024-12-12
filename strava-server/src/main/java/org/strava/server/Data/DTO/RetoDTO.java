@@ -17,6 +17,7 @@ public class RetoDTO implements Serializable  {
     private float valorObjetivo;
     private ArrayList<Deporte> deporte;
     private boolean aceptadoPorUsuario;
+    private float porcentajeCompletado;
 
     public Long getId() {
         return id;
@@ -88,5 +89,13 @@ public class RetoDTO implements Serializable  {
 
     public void setAceptadoPorUsuario(boolean aceptadoPorUsuario) {
         this.aceptadoPorUsuario = aceptadoPorUsuario;
+    }
+
+    public float getPorcentajeCompletado() {
+        return porcentajeCompletado;
+    }
+
+    public void setPorcentajeCompletado(float porcentajeCompletado) {
+        this.porcentajeCompletado = porcentajeCompletado;
     }
 }

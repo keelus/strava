@@ -2,7 +2,10 @@ package org.strava.cliente;
 
 import org.strava.cliente.gui.AutenticacionFrame;
 import org.strava.cliente.gui.FormularioExterno.FormularioExternoServicio;
+import org.strava.cliente.gui.FormularioExterno.SeleccionFormularioExternoLogin;
+import org.strava.cliente.gui.ListarRetosAceptadosFrame;
 import org.strava.cliente.gui.ListarRetosActivosFrame;
+import org.strava.cliente.gui.ListarSesionesEntrenamientoFrame;
 
 import javax.swing.*;
 
@@ -22,21 +25,20 @@ public class Main {
 
         Localizador.bindearServer(puertoServicio, nombreServicio);
 
-
         try {
             // Activa el antialiasing para el texto
             System.setProperty("awt.useSystemAAFontSettings", "on");
 
-            boolean debug = true;
-            if(debug) {
-                // // Codigo temporal inicio
-                char[] p = new char[]{'p', 'a', 's', 's'};
-                Controlador.getInstance().iniciarSesion("user@gmail.com", p, FormularioExternoServicio.Google);
+            SwingUtilities.invokeLater(AutenticacionFrame::new);
+            // boolean debug = false;
+            // if(debug) {
+            //     // // Codigo temporal inicio
+            //     char[] p = new char[]{'1', '2', '3', '4'};
+            //     Controlador.getInstance().iniciarSesion("usuario1@gmail.com", p, FormularioExternoServicio.Google);
 
-                new ListarRetosActivosFrame(Controlador.getInstance().tokenSesion);
-            } else {
-                SwingUtilities.invokeLater(AutenticacionFrame::new);
-            }
+            //     new ListarRetosAceptadosFrame(Controlador.getInstance().tokenSesion);
+            // } else {
+            //}
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package org.strava.server.RemoteFachada;
 
 import org.strava.server.Data.DTO.*;
+import org.strava.server.Data.Dominio.TokenDO;
+import org.strava.server.Data.Dominio.UsuarioDO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -26,4 +28,6 @@ public interface IRemoteFachada extends Remote {
 
     void sesionEntrenamientoCrear(TokenDTO tokenDto, SesionEntrenamientoNuevoDTO sesionEntrenamientoNuevoDto) throws RemoteException;
     List<SesionEntrenamientoDTO> sesionEntrenamientoListar(TokenDTO tokenDto) throws RemoteException;
+
+    UsuarioDTO conseguirUsuarioDeToken(TokenDTO tokenDto) throws  RemoteException;
 }

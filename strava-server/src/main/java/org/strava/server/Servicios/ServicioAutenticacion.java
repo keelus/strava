@@ -1,6 +1,7 @@
 package org.strava.server.Servicios;
 
-import org.strava.server.AutenticacionGateway.AutenticacionGateway;
+import org.strava.server.AutenticacionGateway.AutenticacionGatewayFactory;
+import org.strava.server.AutenticacionGateway.IAutenticacionGateway;
 import org.strava.server.Data.Dominio.*;
 import org.strava.server.Data.Enums.MetodoRegistro;
 
@@ -34,7 +35,8 @@ public class ServicioAutenticacion {
         LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
         credencialesDo.setEmail(datosRegistroDO.getEmail());
         credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
-        AutenticacionGateway.getInstance().loginServicioExterno(credencialesDo, datosRegistroDO.getMetodoRegistro());
+        IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(datosRegistroDO.getMetodoRegistro());
+        autenticacionGateway.iniciarSesion(credencialesDo);
 
         // Una vez se verifican las credenciales del servicio externo, comprobar que no exista un usuario
         // con el correo.
@@ -60,7 +62,8 @@ public class ServicioAutenticacion {
 
     public TokenDO crearSesion(LoginCredencialesDO credencialesDo, MetodoRegistro metodoRegistro) throws Exception {
         // Verificar en Meta/Google
-        AutenticacionGateway.getInstance().loginServicioExterno(credencialesDo, metodoRegistro);
+        IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(metodoRegistro);
+        autenticacionGateway.iniciarSesion(credencialesDo);
 
         // TODO
 
