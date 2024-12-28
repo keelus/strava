@@ -2,17 +2,21 @@ package org.strava.server.Servicios;
 
 import org.strava.server.AutenticacionGateway.AutenticacionGatewayFactory;
 import org.strava.server.AutenticacionGateway.IAutenticacionGateway;
+import org.strava.server.Data.DAO.UsuarioDAO;
 import org.strava.server.Data.Dominio.*;
 import org.strava.server.Data.Enums.MetodoRegistro;
 
 import java.util.*;
 
 public class ServicioAutenticacion {
+    UsuarioDAO usuarioDAO;
+
     private static ServicioAutenticacion instance;
     private final List<UsuarioDO> usuarios = new ArrayList<>();
     private final Map<TokenDO, UsuarioDO> sesiones = new HashMap<>();
 
     private ServicioAutenticacion() {
+        this.usuarioDAO = new UsuarioDAO();
     }
 
     public static ServicioAutenticacion getInstance() {
@@ -20,6 +24,14 @@ public class ServicioAutenticacion {
             instance = new ServicioAutenticacion();
         }
         return instance;
+    }
+
+    public void registrarUsuarioTemp(UsuarioDO usuarioNuevo) {
+        this.usuarioDAO.registrarUsuario(usuarioNuevo);
+    }
+
+    public UsuarioDO obtenerUsuarioTemp(Long id) {
+        return this.usuarioDAO.obtenerUsuario(id);
     }
 
     public UsuarioDO conseguirUsuario(Long usuarioId) throws Exception {
@@ -32,32 +44,19 @@ public class ServicioAutenticacion {
 
     public void registrarUsuario(DatosRegistroDO datosRegistroDO) throws  Exception {
         // Verificar en Meta/Google
-        LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
-        credencialesDo.setEmail(datosRegistroDO.getEmail());
-        credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
-        IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(datosRegistroDO.getMetodoRegistro());
-        autenticacionGateway.iniciarSesion(credencialesDo);
+        // LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
+        // credencialesDo.setEmail(datosRegistroDO.getEmail());
+        // credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
+        // IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(datosRegistroDO.getMetodoRegistro());
+        // autenticacionGateway.iniciarSesion(credencialesDo);
 
-        // Una vez se verifican las credenciales del servicio externo, comprobar que no exista un usuario
-        // con el correo.
-        for(UsuarioDO usuarioDo: usuarios) {
-            if(usuarioDo.getEmail().equalsIgnoreCase(datosRegistroDO.getEmail())) {
-                throw new Exception("Ya existe un usuario con ese correo");
-            }
+        // Verificar que un usuario con ese email no exista.
+        if(usuarioDAO.obtenerUsuarioPorEmail(datosRegistroDO.getEmail().toLowerCase()) == null) {
+            UsuarioDO nuevoUsuario = new UsuarioDO(datosRegistroDO);
+            usuarioDAO.registrarUsuario(nuevoUsuario);
+        } else {
+            throw new Exception("Ya existe un usuario con ese correo");
         }
-
-        // Si el email no esta en uso, se crea el usuario Do apartir de los datos de registro, y se guarda.
-        UsuarioNuevoDO usuarioNuevoDo = new UsuarioNuevoDO();
-        usuarioNuevoDo.setEmail(datosRegistroDO.getEmail());
-        usuarioNuevoDo.setNombre(datosRegistroDO.getNombre());
-        usuarioNuevoDo.setMetodoRegistro(datosRegistroDO.getMetodoRegistro());
-        usuarioNuevoDo.setFechaNacimiento(datosRegistroDO.getFechaNacimiento());
-        usuarioNuevoDo.setPesoKg(datosRegistroDO.getPesoKg());
-        usuarioNuevoDo.setAlturaCm(datosRegistroDO.getAlturaCm());
-        usuarioNuevoDo.setFrecuenciaCardiacaMax(datosRegistroDO.getFrecuenciaCardiacaMax());
-        usuarioNuevoDo.setFrecuenciaCardiacaReposo(datosRegistroDO.getFrecuenciaCardiacaReposo());
-
-        usuarios.add(new UsuarioDO(usuarioNuevoDo, Long.valueOf(usuarios.size())));
     }
 
     public TokenDO crearSesion(LoginCredencialesDO credencialesDo, MetodoRegistro metodoRegistro) throws Exception {

@@ -1,0 +1,16 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="StravaPersistencia" transaction-type="RESOURCE_LOCAL">
+        <class>org.strava.server.Data.Dominio.UsuarioDO</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/stravaDatabase" />
+            <property name="javax.persistence.jdbc.user" value="stravaAdmin" />
+            <property name="javax.persistence.jdbc.password" value="unaContrasenya" />
+
+            <property name="datanucleus.schema.autoCreateAll" value="true" />
+            <property name="datanucleus.schema.autoCreateTables" value="true" />
+            <property name="javax.persistence.logging.level" value="FINE" />
+        </properties>
+    </persistence-unit>
+</persistence>

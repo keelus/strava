@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="3.server" name="strava_server">
+<project basedir="." default="5.server" name="strava_server">
     <property environment="env"/>
 
     <property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
     <property name="dist.dir" location="dist"/>
-    <property name="classpath" location="bin"/>
     <property name="registry.puertoServicio" value="4444"/>
     <property name="service.nombreServicio" value="StravaService"/>
     <property name="export.file" value="IRemoteFachada.jar"/>
     <property name="policy.file" location="security/java.policy"/>
 
+    <property name="resources.dir" value="src/main/resources"/>
+    <property name="lib.dir" value="lib"/>
 
-    <target name="1.build" description="Compila el proyecto.">
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement location="${build.dir}"/>
+    </path>
+
+    <target name="1.clean" description="Limpia la builds.">
         <delete dir="${build.dir}"/>
-        <mkdir dir="${build.dir}"/>
-
-        <javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${classpath}" deprecation="true" fork="true" includeAntRuntime="no"/>
     </target>
 
-    <target name="2.export" depends="1.build" description="Genera el .jar que contiene la interfaz fachada, DTOs y Enums.">
+    <target name="2.build" depends="1.clean" description="Compila el proyecto.">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${source.dir}" destdir="${build.dir}" classpathref="classpath" deprecation="true" fork="true" includeAntRuntime="no"/>
+        <copy todir="${build.dir}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+    </target>
+
+    <target name="3.enhance" depends="2.build" description="Hace las clases que usan DataNucleus persistentes.">
+        <mkdir dir="${build.dir}"/>
+        <java classname="org.datanucleus.enhancer.DataNucleusEnhancer" fork="true" failonerror="true">
+            <classpath refid="classpath"/>
+            <arg value="-api"/>
+            <arg value="JPA"/>
+            <arg value="-v"/>
+            <arg value="true"/>
+
+            <arg value="-pu"/>
+            <arg value="StravaPersistencia"/>
+        </java>
+    </target>
+
+
+    <target name="4.export" depends="3.enhance" description="Genera el .jar que contiene la interfaz fachada, DTOs y Enums.">
         <delete dir="${dist.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <jar destfile="${dist.dir}/${export.file}">
-            <fileset dir="${build.dir}" includes="**/IRemoteFachada.class" />
-            <fileset dir="${build.dir}" includes="**/Data/DTO/*.class" />
-            <fileset dir="${build.dir}" includes="**/Data/Enums/*.class" />
+            <fileset dir="${build.dir}">
+                <include name="**/IRemoteFachada.class" />
+                <include name="**/Data/DTO/*.class" />
+                <include name="**/Data/Enums/*.class" />
+            </fileset>
         </jar>
     </target>
 
-    <target name="3.server" depends="1.build" description="Ejecuta el servidor.">
-        <java classname="org.strava.server.Main" classpath="${classpath}" fork="true">
+    <target name="5.server" description="Ejecuta el servidor.">
+        <java classname="org.strava.server.Main" classpathref="classpath" fork="true">
             <arg value="${registry.puertoServicio}"/>
             <arg value="${service.nombreServicio}"/>
         </java>

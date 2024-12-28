@@ -2,14 +2,23 @@ package org.strava.server.Data.Dominio;
 
 import org.strava.server.Data.Enums.MetodoRegistro;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class UsuarioDO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true)
     private String email;
+
     private String nombre;
-    private MetodoRegistro metodoRegistro;
     private Date fechaNacimiento;
+
+    private MetodoRegistro metodoRegistro;
+
     private Double pesoKg;
     private Double alturaCm;
     private Integer frecuenciaCardiacaMax;
@@ -17,16 +26,15 @@ public class UsuarioDO {
 
     public UsuarioDO() {}
 
-    public UsuarioDO(UsuarioNuevoDO usuarioNuevoDo, Long usuarioId) {
-        this.id = usuarioId;
-        this.email = usuarioNuevoDo.getEmail();
-        this.nombre = usuarioNuevoDo.getEmail();
-        this.metodoRegistro = usuarioNuevoDo.getMetodoRegistro();
-        this.fechaNacimiento = usuarioNuevoDo.getFechaNacimiento();
-        this.pesoKg = usuarioNuevoDo.getPesoKg();
-        this.alturaCm = usuarioNuevoDo.getAlturaCm();
-        this.frecuenciaCardiacaMax = usuarioNuevoDo.getFrecuenciaCardiacaMax();
-        this.frecuenciaCardiacaReposo = usuarioNuevoDo.getFrecuenciaCardiacaReposo();
+    public UsuarioDO(DatosRegistroDO datosRegistroDo) {
+        this.email = datosRegistroDo.getEmail();
+        this.nombre = datosRegistroDo.getNombre();
+        this.metodoRegistro = datosRegistroDo.getMetodoRegistro();
+        this.fechaNacimiento = datosRegistroDo.getFechaNacimiento();
+        this.pesoKg = datosRegistroDo.getPesoKg();
+        this.alturaCm = datosRegistroDo.getAlturaCm();
+        this.frecuenciaCardiacaMax = datosRegistroDo.getFrecuenciaCardiacaMax();
+        this.frecuenciaCardiacaReposo = datosRegistroDo.getFrecuenciaCardiacaReposo();
     }
 
     public Long getId() {
