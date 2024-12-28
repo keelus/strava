@@ -8,8 +8,13 @@ public class StravaEntityManager {
     private static final EntityManagerFactory entityManagerFactory =
             Persistence.createEntityManagerFactory("StravaPersistencia");
 
+    private static EntityManager entityManager = null;
+
     public static EntityManager getEntityManager() {
-        return entityManagerFactory.createEntityManager();
+        if(entityManager == null) {
+            entityManager = entityManagerFactory.createEntityManager();
+        }
+        return entityManager;
     }
 
     public static void close() {

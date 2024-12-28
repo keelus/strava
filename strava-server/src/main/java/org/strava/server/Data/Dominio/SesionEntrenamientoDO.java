@@ -2,12 +2,20 @@ package org.strava.server.Data.Dominio;
 
 import org.strava.server.Data.Enums.Deporte;
 
+import javax.persistence.*;
 import java.time.Duration;
 import java.util.Date;
 
+@Entity
 public class SesionEntrenamientoDO {
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
-    private Long autorId;
+
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private UsuarioDO autor;
+
     private String titulo;
     private float distanciaKm;
     private Date fechaInicio;
@@ -16,9 +24,8 @@ public class SesionEntrenamientoDO {
 
     public SesionEntrenamientoDO() {}
 
-    public SesionEntrenamientoDO(SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo, Long sesionEntrenamientoId, Long autorId) {
-        this.id = sesionEntrenamientoId;
-        this.autorId = autorId;
+    public SesionEntrenamientoDO(SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo, UsuarioDO autor) {
+        this.autor = autor;
         this.titulo = sesionEntrenamientoNuevoDo.getTitulo();
         this.distanciaKm = sesionEntrenamientoNuevoDo.getDistanciaKm();
         this.duracion = sesionEntrenamientoNuevoDo.getDuracion();
@@ -74,11 +81,11 @@ public class SesionEntrenamientoDO {
         this.deporte = deporte;
     }
 
-    public Long getAutorId() {
-        return autorId;
+    public UsuarioDO getAutor() {
+        return autor;
     }
 
-    public void setAutorId(Long autorId) {
-        this.autorId = autorId;
+    public void setAutor(UsuarioDO autor) {
+        this.autor = autor;
     }
 }

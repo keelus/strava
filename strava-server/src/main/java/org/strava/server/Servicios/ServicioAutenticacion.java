@@ -12,8 +12,7 @@ public class ServicioAutenticacion {
     UsuarioDAO usuarioDAO;
 
     private static ServicioAutenticacion instance;
-    private final List<UsuarioDO> usuarios = new ArrayList<>();
-    private final Map<TokenDO, UsuarioDO> sesiones = new HashMap<>();
+    private final Map<TokenDO, Long> sesiones = new HashMap<>();
 
     private ServicioAutenticacion() {
         this.usuarioDAO = new UsuarioDAO();
@@ -26,29 +25,21 @@ public class ServicioAutenticacion {
         return instance;
     }
 
-    public void registrarUsuarioTemp(UsuarioDO usuarioNuevo) {
+    public void registrarUsuario(UsuarioDO usuarioNuevo) {
         this.usuarioDAO.registrarUsuario(usuarioNuevo);
     }
 
-    public UsuarioDO obtenerUsuarioTemp(Long id) {
+    public UsuarioDO obtenerUsuario(Long id) {
         return this.usuarioDAO.obtenerUsuario(id);
-    }
-
-    public UsuarioDO conseguirUsuario(Long usuarioId) throws Exception {
-        for(UsuarioDO usuarioDo : usuarios) {
-            if(usuarioDo.getId().equals(usuarioId))
-                return usuarioDo;
-        }
-        throw new Exception("No se han encontrado usuarios con esa ID.");
     }
 
     public void registrarUsuario(DatosRegistroDO datosRegistroDO) throws  Exception {
         // Verificar en Meta/Google
-        // LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
-        // credencialesDo.setEmail(datosRegistroDO.getEmail());
-        // credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
-        // IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(datosRegistroDO.getMetodoRegistro());
-        // autenticacionGateway.iniciarSesion(credencialesDo);
+        LoginCredencialesDO credencialesDo = new LoginCredencialesDO();
+        credencialesDo.setEmail(datosRegistroDO.getEmail());
+        credencialesDo.setContrasenya(datosRegistroDO.getContrasenya());
+        IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(datosRegistroDO.getMetodoRegistro());
+        autenticacionGateway.iniciarSesion(credencialesDo);
 
         // Verificar que un usuario con ese email no exista.
         if(usuarioDAO.obtenerUsuarioPorEmail(datosRegistroDO.getEmail().toLowerCase()) == null) {
@@ -64,16 +55,9 @@ public class ServicioAutenticacion {
         IAutenticacionGateway autenticacionGateway = AutenticacionGatewayFactory.crearAutenticationGateway(metodoRegistro);
         autenticacionGateway.iniciarSesion(credencialesDo);
 
-        // TODO
-
         // Una vez se verifica credenciales correctas, comprobarlas con las de Strava
-        UsuarioDO usuarioExistente = null;
-        for(UsuarioDO usuarioDo : usuarios) {
-            if (usuarioDo.getEmail().equalsIgnoreCase(credencialesDo.getEmail())) {
-                usuarioExistente = usuarioDo;
-                break;
-            }
-        }
+        // Obtener usuario existente. Si falla, throwea.
+        UsuarioDO usuarioExistente = usuarioDAO.obtenerUsuarioPorEmail(credencialesDo.getEmail().toLowerCase());
 
         if(usuarioExistente == null) {
             throw new Exception("El correo no esta registrado en Strava. Crea una cuenta.");
@@ -93,27 +77,22 @@ public class ServicioAutenticacion {
         String valorTokenAleatorio = new String(tokenAleatorio);
 
         TokenDO token = new TokenDO(valorTokenAleatorio);
-        sesiones.put(token, usuarioExistente);
+        sesiones.put(token, usuarioExistente.getId());
 
         return token;
     }
 
     public void borrarSesion(TokenDO tokenDo) {
-        if(sesiones.containsKey(tokenDo)) {
-            sesiones.remove(tokenDo);
-        }
+        sesiones.remove(tokenDo);
     }
 
     public boolean isTokenValido(TokenDO tokenDo) {
-        if(sesiones.containsKey(tokenDo)) {
-            return true;
-        }
-        return false;
+        return sesiones.containsKey(tokenDo);
     }
 
     public UsuarioDO conseguirUsuarioDeToken(TokenDO tokenDo) throws  Exception {
         if(sesiones.containsKey(tokenDo)) {
-            return sesiones.get(tokenDo);
+            return usuarioDAO.obtenerUsuario(sesiones.get(tokenDo));
         }
         throw new Exception("El token no es valido o no existe.");
     }

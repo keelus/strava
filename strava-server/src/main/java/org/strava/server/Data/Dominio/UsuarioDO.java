@@ -3,7 +3,9 @@ package org.strava.server.Data.Dominio;
 import org.strava.server.Data.Enums.MetodoRegistro;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class UsuarioDO {
@@ -24,6 +26,9 @@ public class UsuarioDO {
     private Integer frecuenciaCardiacaMax;
     private Integer frecuenciaCardiacaReposo;
 
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval = false)
+    private List<RetoDO> retosAceptados;
+
     public UsuarioDO() {}
 
     public UsuarioDO(DatosRegistroDO datosRegistroDo) {
@@ -35,6 +40,7 @@ public class UsuarioDO {
         this.alturaCm = datosRegistroDo.getAlturaCm();
         this.frecuenciaCardiacaMax = datosRegistroDo.getFrecuenciaCardiacaMax();
         this.frecuenciaCardiacaReposo = datosRegistroDo.getFrecuenciaCardiacaReposo();
+        this.retosAceptados = new ArrayList<>();
     }
 
     public Long getId() {
@@ -107,5 +113,13 @@ public class UsuarioDO {
 
     public void setFrecuenciaCardiacaReposo(Integer frecuenciaCardiacaReposo) {
         this.frecuenciaCardiacaReposo = frecuenciaCardiacaReposo;
+    }
+
+    public List<RetoDO> getRetosAceptados() {
+        return retosAceptados;
+    }
+
+    public void setRetosAceptados(List<RetoDO> retosAceptados) {
+        this.retosAceptados = retosAceptados;
     }
 }

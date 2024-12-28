@@ -11,8 +11,7 @@ public class RetoAssembler {
 
         retoDto.setId(reto.getId());
         retoDto.setNombre(reto.getNombre());
-        UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuario(reto.getAutorId());
-        retoDto.setAutor(UsuarioAssembler.doToDto(usuarioDo));
+        retoDto.setAutor(UsuarioAssembler.doToDto(reto.getAutor()));
         retoDto.setDeporte(reto.getDeporte());
         retoDto.setValorObjetivo(reto.getValorObjetivo());
         retoDto.setTipoObjetivo(reto.getTipoObjetivo());
@@ -27,7 +26,7 @@ public class RetoAssembler {
 
         retoDo.setNombre(retoDto.getNombre());
         retoDo.setId(retoDto.getId());
-        retoDo.setAutorId(retoDto.getAutor().getId());
+        retoDo.setAutor(UsuarioAssembler.dtoToDo(retoDto.getAutor()));
         retoDo.setDeporte(retoDto.getDeporte());
         retoDo.setValorObjetivo(retoDto.getValorObjetivo());
         retoDo.setTipoObjetivo(retoDto.getTipoObjetivo());

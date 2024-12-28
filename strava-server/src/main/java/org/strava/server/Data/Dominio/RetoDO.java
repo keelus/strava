@@ -3,23 +3,33 @@ package org.strava.server.Data.Dominio;
 import org.strava.server.Data.Enums.Deporte;
 import org.strava.server.Data.Enums.TipoObjetivo;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Entity
 public class RetoDO {
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private UsuarioDO autor;
+
     private String nombre;
-    private Long autorId;
     private Date fechaInicio;
     private Date fechaFin;
     private TipoObjetivo tipoObjetivo;
     private float valorObjetivo;
+
+    @ElementCollection(targetClass=Deporte.class)
+    @Enumerated(EnumType.STRING)
     private ArrayList<Deporte> deporte;
 
     public RetoDO(){}
 
-    public RetoDO(RetoNuevoDO retoNuevoDo, Long retoId) {
-        this.id = retoId;
+    public RetoDO(RetoNuevoDO retoNuevoDo) {
         this.nombre = retoNuevoDo.getNombre();
 
         // Poner fecha inicio a las 00hs
@@ -55,12 +65,12 @@ public class RetoDO {
         this.nombre = nombre;
     }
 
-    public Long getAutorId() {
-        return autorId;
+    public UsuarioDO getAutor() {
+        return autor;
     }
 
-    public void setAutorId(Long autorId) {
-        this.autorId = autorId;
+    public void setAutor(UsuarioDO autor) {
+        this.autor = autor;
     }
 
     public Date getFechaInicio() {

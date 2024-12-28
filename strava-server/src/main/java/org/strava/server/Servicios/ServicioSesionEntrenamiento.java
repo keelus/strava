@@ -1,15 +1,16 @@
 package org.strava.server.Servicios;
 
-import org.strava.server.Data.DTO.SesionEntrenamientoDTO;
+import org.strava.server.Data.DAO.SesionEntrenamientoDAO;
 import org.strava.server.Data.Dominio.*;
 
 import java.util.*;
 
 public class ServicioSesionEntrenamiento {
+    SesionEntrenamientoDAO sesionEntrenamientoDAO;
     private static ServicioSesionEntrenamiento instance;
-    private final Map<Long, SesionEntrenamientoDO> sesionesEntrenamiento = new HashMap<>();
 
     private ServicioSesionEntrenamiento() {
+        this.sesionEntrenamientoDAO = new SesionEntrenamientoDAO();
     }
 
     public static ServicioSesionEntrenamiento getInstance() {
@@ -22,8 +23,8 @@ public class ServicioSesionEntrenamiento {
     public void crearSesionEntrenamiento(TokenDO tokenDo, SesionEntrenamientoNuevoDO sesionEntrenamientoNuevoDo) throws Exception {
         if(ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
             UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
-            SesionEntrenamientoDO sesionEntrenamientoDo = new SesionEntrenamientoDO(sesionEntrenamientoNuevoDo, Long.valueOf(sesionesEntrenamiento.size()), usuarioDo.getId());
-            sesionesEntrenamiento.put(sesionEntrenamientoDo.getId(), sesionEntrenamientoDo);
+            SesionEntrenamientoDO sesionEntrenamientoDo = new SesionEntrenamientoDO(sesionEntrenamientoNuevoDo, usuarioDo);
+            sesionEntrenamientoDAO.registrarSesionEntrenamiento(sesionEntrenamientoDo);
         } else {
             throw new Exception("El token de sesion no es valido.");
         }
@@ -31,16 +32,8 @@ public class ServicioSesionEntrenamiento {
 
     public List<SesionEntrenamientoDO> getSesionesEntrenamientos(TokenDO tokenDo) throws Exception {
         if (ServicioAutenticacion.getInstance().isTokenValido(tokenDo)) {
-            List<SesionEntrenamientoDO> sesionesEntrenamientosDelUsuario = new ArrayList<>();
             UsuarioDO usuarioDo = ServicioAutenticacion.getInstance().conseguirUsuarioDeToken(tokenDo);
-            for(Map.Entry<Long, SesionEntrenamientoDO> entry: sesionesEntrenamiento.entrySet()) {
-                SesionEntrenamientoDO sesionEntrenamientoDo = entry.getValue();
-                if(sesionEntrenamientoDo.getAutorId().equals(usuarioDo.getId())) {
-                    sesionesEntrenamientosDelUsuario.add(sesionEntrenamientoDo);
-                }
-            }
-
-            return sesionesEntrenamientosDelUsuario;
+            return sesionEntrenamientoDAO.obtenerSesionesEntrenamiento(usuarioDo);
         } else {
             throw new Exception("El token de sesion no es valido.");
         }

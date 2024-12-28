@@ -1,6 +1,8 @@
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
     <persistence-unit name="StravaPersistencia" transaction-type="RESOURCE_LOCAL">
         <class>org.strava.server.Data.Dominio.UsuarioDO</class>
+        <class>org.strava.server.Data.Dominio.RetoDO</class>
+        <class>org.strava.server.Data.Dominio.SesionEntrenamientoDO</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
