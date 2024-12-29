@@ -59,7 +59,7 @@
         </jar>
     </target>
 
-    <target name="5.server" description="Ejecuta el servidor.">
+    <target name="5.server" depends="4.export" description="Ejecuta el servidor.">
         <java classname="org.strava.server.Main" classpathref="classpath" fork="true">
             <arg value="${registry.puertoServicio}"/>
             <arg value="${service.nombreServicio}"/>
