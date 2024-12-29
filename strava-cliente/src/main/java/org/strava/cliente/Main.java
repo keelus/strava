@@ -30,16 +30,6 @@ public class Main {
             System.setProperty("awt.useSystemAAFontSettings", "on");
 
             SwingUtilities.invokeLater(AutenticacionFrame::new);
-            // boolean debug = false;
-            // if(debug) {
-            //     // // Codigo temporal inicio
-            //     char[] p = new char[]{'1', '2', '3', '4'};
-            //     Controlador.getInstance().iniciarSesion("usuario1@gmail.com", p, FormularioExternoServicio.Google);
-
-            //     new ListarRetosAceptadosFrame(Controlador.getInstance().tokenSesion);
-            // } else {
-            //}
-
         } catch (Exception e) {
             e.printStackTrace();
         }

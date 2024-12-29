@@ -45,8 +45,17 @@ public class ListarRetosAceptadosFrame extends JFrame {
         int columna = 0;
         final int NUM_COLUMNAS = 2;
 
+        Long usuarioId;
+        try {
+            usuarioId = Controlador.getInstance().conseguirUsuarioIdSesionActual();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener tu ID de usuario: " + e.getCause());
+            dispose();
+            return;
+        }
+
         for (RetoDTO reto : retos) {
-            RetoElemento retoElemento = elementoReto(reto, fila, columna);
+            RetoElemento retoElemento = elementoReto(reto, usuarioId, fila, columna);
             retosPanel.add(retoElemento.panel, retoElemento.gbc);
 
             columna++;
@@ -73,7 +82,7 @@ public class ListarRetosAceptadosFrame extends JFrame {
         setVisible(true);
     }
 
-    private RetoElemento elementoReto(RetoDTO reto, int fila, int columna) {
+    private RetoElemento elementoReto(RetoDTO reto, Long idUsuarioActual, int fila, int columna) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = columna;
@@ -96,12 +105,11 @@ public class ListarRetosAceptadosFrame extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
         ));
 
-        boolean isAuthor = true;
-
         JLabel nombreLabel = new JLabel(reto.getNombre());
         nombreLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        JLabel autorLabel = new JLabel(isAuthor ? "Creado por ti" : "Creado por " + reto.getAutor());
+        boolean esAutor = reto.getAutor().getId().equals(idUsuarioActual);
+        JLabel autorLabel = new JLabel(esAutor ? "Creado por ti" : "Creado por " + reto.getAutor().getNombre());
         autorLabel.setFont(new Font("Arial", Font.ITALIC, 12));
         autorLabel.setForeground(Color.GRAY);
 

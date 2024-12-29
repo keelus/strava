@@ -34,10 +34,6 @@ public class SesionEntrenamientoDAO {
 
     public void registrarSesionEntrenamiento(SesionEntrenamientoDO sesionEntrenamientoDo) {
         entityManager.getTransaction().begin();
-
-        UsuarioDO autor = entityManager.merge(sesionEntrenamientoDo.getAutor());
-        sesionEntrenamientoDo.setAutor(autor);
-
         entityManager.persist(sesionEntrenamientoDo);
         entityManager.getTransaction().commit();
     }

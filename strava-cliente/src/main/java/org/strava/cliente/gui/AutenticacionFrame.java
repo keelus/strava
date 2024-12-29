@@ -4,6 +4,8 @@ import org.strava.cliente.gui.FormularioExterno.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AutenticacionFrame extends JFrame {
     public AutenticacionFrame() {
@@ -37,6 +39,7 @@ public class AutenticacionFrame extends JFrame {
         // boton listar retos
         JButton registroButton = new JButton("Registro");
         Utils.estilarButton(registroButton);
+
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
