@@ -7,6 +7,7 @@
     <property name="registry.puertoServicio" value="4444"/>
     <property name="server.nombreServicio" value="StravaService"/>
     <property name="policy.file" location="security/java.policy"/>
+    <property name="resources.dir" value="src/main/resources"/>
 
     <path id="full.classpath">
         <fileset dir="${lib.dir}">
@@ -19,9 +20,12 @@
         <delete dir="${build.dir}"/>
         <mkdir dir="${build.dir}"/>
         <javac srcdir="${source.dir}" destdir="${build.dir}" classpathref="full.classpath" deprecation="true" fork="true" includeAntRuntime="no"/>
+        <copy todir="${build.dir}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
     </target>
 
-    <target name="2.client" depends="1.build" description="Ejecuta el servidor.">
+    <target name="2.client" depends="1.build" description="Ejecuta el cliente.">
         <java classname="org.strava.cliente.Main" classpathref="full.classpath" fork="true">
             <jvmarg value="-Djava.security.policy=${policy.file}"/>
             <arg value="${registry.puertoServicio}"/>
